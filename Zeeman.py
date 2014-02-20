@@ -1,4 +1,4 @@
-__author__ = 'martin'
+__author__ = 'Lothilius'
 
 import MyQue
 import csv
