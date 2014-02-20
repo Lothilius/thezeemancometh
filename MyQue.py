@@ -1,4 +1,4 @@
-__author__ = 'martin'
+__author__ = 'Lothilius'
 
 class MyQueue:
     """Will take items and place them in to a list so that a FIFO structure is used."""
