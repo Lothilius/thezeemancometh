@@ -6,7 +6,6 @@ import sys
 
 inputFileDer = "/Users/admin/Documents/data_csv/ImageData"
 fileNum = ""
-#inputFileName = "/Users/admin/Dropbox/School/Fall-2012/CS-313e/CS-313e-1/HW-10/scrambledwordslist.txt"
 
 #Pull data from CSV file
 def arrayFromFile(filename):
@@ -17,7 +16,7 @@ def arrayFromFile(filename):
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
             dataArray.append(row)
-    return dataArray
+    return dataArray[1565]
 
 #Reduce data to a few peak points
 def peaks(data):
@@ -106,7 +105,7 @@ def ternarySearch(f, left, right, absolutePrecision):
     leftThird = (2*left + right)/3
     rightThird = (left + 2*right)/3
 
-    if f(leftThird) < f(rightThird):
+    if f[leftThird] < f[rightThird]:
         return ternarySearch(f, leftThird, right, absolutePrecision)
     else:
         return ternarySearch(f, left, rightThird, absolutePrecision)
@@ -116,16 +115,20 @@ def ternarySearch(f, left, right, absolutePrecision):
 def main():
     fileNum = input("Type in file number: ")
     data = arrayFromFile(inputFileDer+fileNum+".csv")
-    rgbMap = peaks(data)
-    arrayTofile(rgbMap, fileNum)
-    peakL1 = int(input("Type in left peak 1: "))
-    peakR1 = int(input("Type in right peak 1: "))
-    peakL2 = int(input("Type in left peak 2: "))
-    peakI = int(input("Type in inner peak: "))
-    peakO = int(input("Type in outer peak: "))
+    #rgbMap = peaks(data)
+    #arrayTofile(rgbMap, fileNum)
+    peakL1 = int(input("Type in potential n peak pixel bin: "))
+    peakPrec = int(input("Type in precision: "))
+    peakL1 = ternarySearch(data, peakL1-15, peakL1+15, peakPrec)
+    print(peakL1)
 
-    finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
-    finalData.insert(0, fileNum)
-    dataTofile(finalData)
+    # peakR1 = int(input("Type in potential opposite peak pixel bin: "))
+    # peakL2 = int(input("Type in n + 1 peak: "))
+    # peakI = int(input("Type in potential inner peak: "))
+    # peakO = int(input("Type in potential outer peak: "))
+    #
+    # finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
+    # finalData.insert(0, fileNum)
+    # dataTofile(finalData)
 
 main()
