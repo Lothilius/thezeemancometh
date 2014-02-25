@@ -101,9 +101,9 @@ def main():
     data = arrayFromFile(inputFileDer+fileNum+".csv")
     rgbMap = peaks(data)
     arrayTofile(rgbMap, fileNum)
-    peakL1 = int(input("Type in left peak 1: "))
-    peakR1 = int(input("Type in right peak 1: "))
-    peakL2 = int(input("Type in left peak 2: "))
+    peakL1 = int(input("Type in n peak: "))
+    peakR1 = int(input("Type in n pair peak: "))
+    peakL2 = int(input("Type in n+1 peak: "))
     peakI = int(input("Type in inner peak: "))
     peakO = int(input("Type in outer peak: "))
 
