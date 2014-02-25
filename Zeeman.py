@@ -80,8 +80,7 @@ def arrayTofile(dataArray, fileNum):
     print("done")
 
 #Create file from array with finaldata.csv as the name and append.
-def dataTofile(dataArray):
-    fileName = "Finaldata.csv"
+def dataTofile(dataArray,fileName):
     with open(fileName, 'a', newline='') as csvfile:
         linewriter = csv.writer(csvfile, delimiter= ",")
         linewriter.writerow(dataArray)
