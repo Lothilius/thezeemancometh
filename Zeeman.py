@@ -110,6 +110,7 @@ def main():
     finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
     peaksUsed = [fileNum, peakL1, peakR1, peakL2, peakI, peakO]
     finalData.insert(0, fileNum)
-    dataTofile(finalData)
+    dataTofile(finalData,"Finaldata.csv")
+    dataTofile(peaksUsed,"peaksUsed.csv")
 
 main()
