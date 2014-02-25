@@ -37,3 +37,22 @@ nosetests.xml
 
 #Data files created
 */processFiles/*
+*.csv
+
+.idea/.name
+
+.idea/dictionaries/admin.xml
+
+.idea/encodings.xml
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/scopes/scope_settings.xml
+
+.idea/thezeemancometh.iml
+
+.idea/vcs.xml
+
+.idea/workspace.xml
