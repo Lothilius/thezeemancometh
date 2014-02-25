@@ -27,7 +27,7 @@ def peaks(data):
     lasti = 0
     vlast = 0
 
-    for pixel in data:
+    for pixel in data[0]:
         if len(pixel) == 2:
             pixel = pixel.replace("0.","0")
         if opStack.isEmpty():
