@@ -108,6 +108,7 @@ def main():
     peakO = int(input("Type in outer peak: "))
 
     finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
+    peaksUsed = [fileNum, peakL1, peakR1, peakL2, peakI, peakO]
     finalData.insert(0, fileNum)
     dataTofile(finalData)
 
