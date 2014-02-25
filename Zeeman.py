@@ -4,9 +4,8 @@ import MyQue
 import csv
 import sys
 
-inputFileDer = "/Users/admin/Documents/data_csv/ImageData"
+inputFileDer = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/"
 fileNum = ""
-#inputFileName = "/Users/admin/Dropbox/School/Fall-2012/CS-313e/CS-313e-1/HW-10/scrambledwordslist.txt"
 
 #Pull data from CSV file
 def arrayFromFile(filename):
