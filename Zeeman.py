@@ -72,7 +72,7 @@ def radius(peakL, peakR):
 
 #write an array to a file.
 def arrayTofile(dataArray, fileNum):
-    fileName = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/ImageData"+fileNum+".csv"
+    fileName = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/canon2_image_data/ImagePeakData"+fileNum+".csv"
     print(fileName)
     with open(fileName, 'w+', newline='') as csvfile:
         linewriter = csv.writer(csvfile, delimiter= ",")
