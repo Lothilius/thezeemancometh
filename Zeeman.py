@@ -96,7 +96,12 @@ def dataTofile(dataArray,fileName):
 #Create array of data for creating the Delta enregy function.
 def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
     rad1 = radius(peakL1,peakR1) / 2
-    halfPoint = peakL1 + rad1
+    if peakL1 < peakR1:
+        halfPoint = peakL1 + rad1
+    elif peakL1 > peakR1:
+        halfPoint = peakR1 + rad1
+    else:
+        print("error")
     rad2 = radius(peakL2, halfPoint)
     radI = radius(peakI, halfPoint)
     radO = radius(peakO, halfPoint)
