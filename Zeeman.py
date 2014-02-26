@@ -69,8 +69,10 @@ def peaks(data):
 def radius(peakL, peakR):
     if peakL < peakR:
         rad = (peakR - peakL)
-    else:
+    elif peakL > peakR:
         rad = (peakL - peakR)
+    else:
+        print("error")
     return rad
 
 #write an array to a file.
