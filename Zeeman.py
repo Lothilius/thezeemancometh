@@ -121,8 +121,8 @@ def main():
     peakO = int(input("Type in outer peak: "))
 
     finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
-    peaksUsed = [fileNum, peakL1, peakR1, peakL2, peakI, peakO]
-    finalData.insert(0, fileNum)
+    peaksUsed = [fileNum.replace("_","."), peakL1, peakR1, peakL2, peakI, peakO]
+    finalData.insert(0, .replace("_","."))
     dataTofile(finalData,"Finaldata.csv")
     dataTofile(peaksUsed,"peaksUsed.csv")
 
