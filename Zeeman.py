@@ -16,6 +16,7 @@ def arrayFromFile(filename):
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
             dataArray.append(row)
+    csvfile.close()
     return dataArray
 
 #Reduce data to a few peak points
@@ -80,6 +81,7 @@ def arrayTofile(dataArray, fileNum):
         linewriter = csv.writer(csvfile, delimiter= ",")
         for each in dataArray:
             linewriter.writerow([each])
+    csvfile.close()
     print("done")
 
 #Create file from array with finaldata.csv as the name and append.
@@ -87,6 +89,7 @@ def dataTofile(dataArray,fileName):
     with open(fileName, 'a', newline='') as csvfile:
         linewriter = csv.writer(csvfile, delimiter= ",")
         linewriter.writerow(dataArray)
+    csvfile.close()
 
 #Create array of data for creating the Delta enregy function.
 def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
