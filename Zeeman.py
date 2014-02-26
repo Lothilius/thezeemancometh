@@ -4,7 +4,7 @@ import MyQue
 import csv
 import sys
 
-inputFileDer = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/thezeemancometh/processFiles/canon2_image_data/ImageData"
+inputFileDer = "/Users/martin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/thezeemancometh/processFiles/canon2_image_data/ImageData"
 fileNum = ""
 
 #Pull data from CSV file
