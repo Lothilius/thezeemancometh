@@ -66,8 +66,11 @@ def peaks(data):
 
 # Return Radius given two peaks on the same ring
 def radius(peakL, peakR):
-   rad = (peakR - peakL)
-   return rad
+    if peakL < peakR:
+        rad = (peakR - peakL)
+    else:
+        rad = (peakL - peakR)
+    return rad
 
 #write an array to a file.
 def arrayTofile(dataArray, fileNum):
