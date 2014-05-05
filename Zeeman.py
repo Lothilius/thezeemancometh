@@ -18,7 +18,7 @@ def arrayFromFile(filename):
     """Given an external file containing numbers,
             create an array from those numbers."""
     dataArray = []
-    with open(filename, newline='') as csvfile:
+    with open(filename, 'r+') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
         for row in spamreader:
             dataArray.append(row)
@@ -119,8 +119,8 @@ def ternarySearch(f, left, right, absolutePrecision):
 
 
 def main():
-    fileNum = input("Type in file number: ")
-    data = arrayFromFile(inputFileDer+fileNum+".csv")
+    fileNum = raw_input("Type in file number: ")
+    data = arrayFromFile(inputFileDer+fileNum+'_a.csv')
     #rgbMap = peaks(data)
     #arrayTofile(rgbMap, fileNum)
     peakL1 = int(input("Type in potential n peak pixel bin: "))
