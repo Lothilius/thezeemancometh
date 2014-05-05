@@ -1,6 +1,5 @@
 __author__ = 'Lothilius'
 
-import MyQue
 import csv
 import sys
 
