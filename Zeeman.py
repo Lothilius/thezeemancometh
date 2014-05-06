@@ -119,6 +119,43 @@ def ternarySearch(f, left, right, absolutePrecision):
         return ternarySearch(f, left, rightThird, absolutePrecision)
 
 
+#Processes jpg file
+def jpg_to_array(file_path, file_name):
+    full_path = file_path + file_name
+    image = data.load(full_path)
+    #plt.imshow(image)
+    #plt.show()
+    return image
+
+#Remove all but one color
+def strip_color(image_rgb, color_of_interest):
+    image_rgb = ski.img_as_float(image_rgb)
+
+    if color_of_interest == 1:
+        colorow = np.array([[0, 1.0, 0]] * len(image_rgb[0]))
+    image_proc = np.array([colorow] * len(image_rgb))
+
+    image_proc = image_proc * image_rgb
+    image_proc = rgb2gray(image_proc)
+
+    #np.array(image_proc)
+    plt.imshow(image_proc)
+    plt.show()
+    return image_proc
+
+#plot data
+def plotevents(datalist):
+    x = range(0, len(datalist))
+    x = np.array(x)
+    y = datalist
+
+    plt.plot(y)
+    #fig, ax = plt.subplots()
+    #plt.scatter(x,y,s=20, marker='.', c='blue')
+
+    plt.show()
+    return "done"
+
 
 def main():
     fileNum = raw_input("Type in file number: ")
