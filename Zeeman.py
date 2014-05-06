@@ -6,7 +6,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
 
-from skimage import data, filter, color
+from skimage import data, filter
+from skimage.color import rgb2gray
 from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
