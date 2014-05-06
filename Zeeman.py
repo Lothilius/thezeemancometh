@@ -4,6 +4,7 @@ import csv
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import skimage as ski
 
 from skimage import data, filter, color
 from skimage.transform import hough_circle
