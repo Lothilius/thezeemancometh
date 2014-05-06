@@ -12,7 +12,7 @@ from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
 
-inputFileDer = "/Users/martin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/canon1_image_data/ImageData"
+inputFileDer = "/Users/martin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/as_images/"
 fileNum = ""
 
 #Pull data from CSV file
