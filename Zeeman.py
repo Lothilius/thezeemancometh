@@ -173,8 +173,8 @@ def main():
 
     #rgbMap = peaks(data)
     #arrayTofile(rgbMap, fileNum)
-    peakL1 = int(input("Type in potential n peak pixel bin: "))
-    peakPrec = int(input("Type in precision: "))
+    peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
+    peakPrec = int(raw_input("Type in precision: "))
     peakL1 = ternarySearch(data, peakL1-15, peakL1+15, peakPrec)
     print(peakL1)
 
