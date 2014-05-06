@@ -158,8 +158,19 @@ def plotevents(datalist):
 
 
 def main():
-    fileNum = raw_input("Type in file number: ")
-    data = arrayFromFile(inputFileDer+fileNum+'_a.csv')
+    file_name = raw_input("Type in file name: ")
+    #data = arrayFromFile(inputFileDer+fileNum)
+    image = jpg_to_array(inputFileDer, file_name)
+
+    color_of_interest = raw_input("What color is of interest? ")
+
+    if ('Green' in color_of_interest) or ('green' in color_of_interest):
+        color_of_interest = 1
+        image = strip_color(image, color_of_interest)
+        plotevents(image[1622])
+        print('The red and blue have been stripped from image.')
+
+
     #rgbMap = peaks(data)
     #arrayTofile(rgbMap, fileNum)
     peakL1 = int(input("Type in potential n peak pixel bin: "))
