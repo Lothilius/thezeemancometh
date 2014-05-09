@@ -1,3 +1,4 @@
+
 __author__ = 'Lothilius'
 
 import csv
@@ -13,8 +14,6 @@ from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
 
-inputFileDer = "/Users/martin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/as_images/"
-fileNum = ""
 
 #Pull data from CSV file
 def arrayFromFile(filename):
@@ -172,20 +171,10 @@ def main():
         print('The red and blue have been stripped from image.')
 
 
-    #rgbMap = peaks(data)
-    #arrayTofile(rgbMap, fileNum)
     peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
     peakPrec = int(raw_input("Type in precision: "))
     peakL1 = ternarySearch(data, peakL1-15, peakL1+15, peakPrec)
     print(peakL1)
 
-    # peakR1 = int(input("Type in potential opposite peak pixel bin: "))
-    # peakL2 = int(input("Type in n + 1 peak: "))
-    # peakI = int(input("Type in potential inner peak: "))
-    # peakO = int(input("Type in potential outer peak: "))
-    #
-    # finalData = dataArray(peakL1, peakR1, peakL2, peakI, peakO)
-    # finalData.insert(0, fileNum)
-    # dataTofile(finalData)
 
 main()
