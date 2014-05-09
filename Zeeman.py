@@ -197,6 +197,16 @@ def plotevents(datalist):
 
 
 def main():
+    for file in os.listdir("/Users/"):
+        if file == 'martin':
+            print("Welcome Martin")
+            inputFileDer = "/Users/martin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/as_images/"
+            break
+        elif file == 'admin':
+            print("Welcome Admin")
+            inputFileDer = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/as_images/"
+            break
+
     file_name = raw_input("Type in file name: ")
     #data = arrayFromFile(inputFileDer+fileNum)
     image = jpg_to_array(inputFileDer, file_name)
