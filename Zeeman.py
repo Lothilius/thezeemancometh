@@ -128,8 +128,8 @@ def jpg_to_array(file_path, file_name):
     return image
 
 #Remove all but one color
-def strip_color(image_rgb, color_of_interest):
-    image_rgb = ski.img_as_float(image_rgb)
+def strip_color(image_rgb1, color_of_interest):
+    image_rgb = ski.img_as_float(image_rgb1)
 
     if color_of_interest == 1:
         colorow = np.array([[0, 1.0, 0]] * len(image_rgb[0]))
