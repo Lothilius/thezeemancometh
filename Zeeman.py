@@ -203,11 +203,16 @@ def main():
 
     color_of_interest = raw_input("What color is of interest? ")
 
-    if ('Green' in color_of_interest) or ('green' in color_of_interest):
+    if ('Red' in color_of_interest) or ('red' in color_of_interest):
+        color_of_interest = 0
+    elif ('Green' in color_of_interest) or ('green' in color_of_interest):
         color_of_interest = 1
-        image = strip_color(image, color_of_interest)
-        plotevents(image[1622])
-        print('The red and blue have been stripped from image.')
+    elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
+        color_of_interest = 2
+
+    image = strip_color(image, color_of_interest)
+    plotevents(image[1622])
+    print('The red and blue have been stripped from image.')
 
 
     peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
