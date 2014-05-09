@@ -131,8 +131,13 @@ def jpg_to_array(file_path, file_name):
 def strip_color(image_rgb1, color_of_interest):
     image_rgb = ski.img_as_float(image_rgb1)
 
-    if color_of_interest == 1:
+    if color_of_interest == 0:
+        colorow = np.array([[1.0, 0, 0]] * len(image_rgb[0]))
+    elif color_of_interest == 1:
         colorow = np.array([[0, 1.0, 0]] * len(image_rgb[0]))
+    elif color_of_interest == 2:
+        colorow = np.array([[0, 0, 1.0]] * len(image_rgb[0]))
+
     image_proc = np.array([colorow] * len(image_rgb))
 
     image_proc = image_proc * image_rgb
