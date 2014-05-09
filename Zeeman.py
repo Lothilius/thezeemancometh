@@ -149,7 +149,38 @@ def strip_color(image_rgb1, color_of_interest):
     plt.imshow(img)
 
     plt.show()
-    return image_proc
+
+    return rings
+
+#Detect radius
+def get_radius(edges, image_rgb1):
+    image = ski.img_as_ubyte(image_rgb1[1127:2127, 1900:2900])
+    plt.imshow(edges)
+    plt.show()
+
+    hough_radii = np.arange(560, 570, 2)
+    hough_res = hough_circle(edges, hough_radii)
+
+    centers = []
+    accums = []
+    radii = []
+
+    for radius, h in zip(hough_radii, hough_res):
+        # For each radius, extract two circles
+        peaks = peak_local_max(h, num_peaks=2)
+        centers.extend(peaks)
+        accums.extend(h[peaks[:, 0], peaks[:, 1]])
+        radii.extend([radius, radius])
+
+    # Draw the most prominent 5 circles
+    image = ski.color.gray2rgb(image)
+    for idx in np.argsort(accums)[::-1][:1]:
+        center_x, center_y = centers[idx]
+        radius = radii[idx]
+        cx, cy = circle_perimeter(center_y, center_x, radius)
+        image[cy, cx] = (220, 0, 0)
+
+    return image
 
 #plot data
 def plotevents(datalist):
