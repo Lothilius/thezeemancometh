@@ -217,7 +217,7 @@ def main():
 
     peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
     peakPrec = int(raw_input("Type in precision: "))
-    peakL1 = ternarySearch(data, peakL1-15, peakL1+15, peakPrec)
+    peakL1 = ternarySearch(image[1622], peakL1-15, peakL1+15, peakPrec)
     print(peakL1)
 
 
