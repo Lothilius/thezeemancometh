@@ -141,7 +141,11 @@ def strip_color(image_rgb1, color_of_interest):
     image_proc = np.array([colorow] * len(image_rgb))
 
     image_proc = image_proc * image_rgb
+
     image_proc = rgb2gray(image_proc)
+    plt.imshow(image_proc)
+    plt.gray()
+    plt.show()
 
     rings = ski.filter.sobel(image_proc)
 
