@@ -169,7 +169,7 @@ def get_center(edges, image_rgb1):
     plt.gray()
     plt.show()
 
-    hough_radii = np.arange(560, 570, 2)
+    hough_radii = np.arange(400, 565, 5)
     hough_res = hough_circle(edges, hough_radii)
 
     centers = []
