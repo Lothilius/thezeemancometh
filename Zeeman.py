@@ -209,6 +209,19 @@ def plotevents(datalist):
     return "done"
 
 
+#Create histogram plot for center of circles.
+def histo_plot(image, center):
+    h = np.array([0] * len(image[0]))
+    hist = np.array([h] * len(image))
+
+    for each in center:
+        hist[each[0]][each[1]] += 1
+    H, xedges, yedges = np.histogram2d(center[:,0], center[:,1], bins=25)
+    plt.pcolor(xedges, yedges, H)
+    plt.show()
+
+    return hist
+
 def main():
     for file in os.listdir("/Users/"):
         if file == 'martin':
