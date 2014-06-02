@@ -6,7 +6,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
-import pylab
+import pylab as P
 
 from skimage import data, filter
 from skimage.color import rgb2gray
