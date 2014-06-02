@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import skimage as ski
 import pylab as P
 
-from skimage import data, filter
+from skimage import data, filter, exposure
 from skimage.color import rgb2gray
 from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
