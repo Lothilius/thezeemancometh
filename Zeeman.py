@@ -157,7 +157,7 @@ def strip_color(image_rgb1, color_of_interest):
     plt.gray()
     plt.show()
 
-    return rings
+    return rings, radii
 
 #Detect radius
 def get_radius(edges, image_rgb1):
