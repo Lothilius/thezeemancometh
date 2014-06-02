@@ -246,10 +246,24 @@ def main():
     elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
         color_of_interest = 2
 
-    image = strip_color(image, color_of_interest)
-    plotevents(image[1622])
-    print('The red and blue have been stripped from image.')
+    image, center = strip_color(org_image, color_of_interest)
 
+    #Print events in the average of the radius in the y access.
+    avrg_x = np.mean(center, axis=0)[0]
+    uncertanty_x = np.std(center, axis=0)[0]
+
+    avrg_y = np.mean(center, axis=0)[1]
+    uncertanty_y = np.std(center, axis=0)[0]
+
+    plotevents(org_image[avrg_x][:, 1])
+    plotevents(org_image[avrg_y][:, 1])
+
+    center = np.array(center)
+
+    H = histo_plot(image[977:2277, 1650:3150], center)
+    plt.imshow(H)
+
+    plt.show()
 
     peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
     peakPrec = int(raw_input("Type in precision: "))
