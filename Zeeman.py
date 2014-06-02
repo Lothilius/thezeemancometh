@@ -183,15 +183,17 @@ def get_center(edges, image_rgb1):
         accums.extend(h[peaks[:, 0], peaks[:, 1]])
         radii.extend([radius, radius])
 
-    # Draw the most prominent 5 circles
+    # Draw the most prominent 50 circles
+    center_array = []
     image = ski.color.gray2rgb(image)
-    for idx in np.argsort(accums)[::-1][:1]:
+    for idx in np.argsort(accums)[::-1][:50]:
         center_x, center_y = centers[idx]
         radius = radii[idx]
+        center_array.append([center_x, center_y])
         cx, cy = circle_perimeter(center_y, center_x, radius)
         image[cy, cx] = (220, 0, 0)
 
-    return image
+    return image, center_array
 
 #plot data
 def plotevents(datalist):
