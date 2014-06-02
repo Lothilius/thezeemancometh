@@ -203,7 +203,7 @@ def plotevents(datalist):
 
     plt.plot(y)
     #fig, ax = plt.subplots()
-    #plt.scatter(x,y,s=20, marker='.', c='blue')
+    #plt.scatter(x, y, s=20, marker='.', c='blue')
 
     plt.show()
     return "done"
