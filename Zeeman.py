@@ -235,7 +235,7 @@ def main():
 
     file_name = raw_input("Type in file name: ")
     #data = arrayFromFile(inputFileDer+fileNum)
-    image = jpg_to_array(inputFileDer, file_name)
+    org_image = jpg_to_array(inputFileDer, file_name)
 
     color_of_interest = raw_input("What color is of interest? ")
 
