@@ -151,6 +151,10 @@ def strip_color(image_rgb1, color_of_interest):
 
     img, radii = get_center(rings, image_rgb)
 
+    print('The red and blue have been stripped from image.')
+
+    plt.imshow(rings)
+    plt.gray()
     plt.show()
 
     return rings
