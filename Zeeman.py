@@ -160,9 +160,13 @@ def strip_color(image_rgb1, color_of_interest):
     return rings, radii
 
 #Detect radius
-def get_radius(edges, image_rgb1):
-    image = ski.img_as_ubyte(image_rgb1[1127:2127, 1900:2900])
+def get_center(edges, image_rgb1):
+    #image = ski.img_as_ubyte(edges[977:2277, 1650:3150])
+    image = edges[977:2277, 1650:3150]
+    edges = edges[977:2277, 1650:3150]
+
     plt.imshow(edges)
+    plt.gray()
     plt.show()
 
     hough_radii = np.arange(560, 570, 2)
