@@ -149,8 +149,7 @@ def strip_color(image_rgb1, color_of_interest):
 
     rings = ski.filter.canny(image_proc, sigma=7, low_threshold=0, high_threshold=7)
 
-    img = get_radius(image_proc, image_rgb1)
-    plt.imshow(img)
+    img, radii = get_center(rings, image_rgb)
 
     plt.show()
 
