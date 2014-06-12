@@ -249,15 +249,26 @@ def main():
     plt.imshow(image_stripped, origin='lower', alpha=.5)
     plt.gray()
 
+
     #Print events in the average of the radius in the y access.
-    avrg_x = np.mean(center, axis=0)[0]
-    uncertanty_x = np.std(center, axis=0)[0]
-
-    avrg_y = np.mean(center, axis=0)[1]
+    avrg_y = np.mean(center, axis=0)[0]
+    print('Average y value for center: ' + str(avrg_y))
     uncertanty_y = np.std(center, axis=0)[0]
+    print('Uncertainty in y: ' + str(uncertanty_y))
 
-    plotevents(org_image[avrg_x][:, 1])
-    plotevents(org_image[avrg_y][:, 1])
+    avrg_x = np.mean(center, axis=0)[1]
+    print('Average x value for center: ' + str(avrg_x))
+    uncertanty_x = np.std(center, axis=0)[1]
+    print('Uncertainty in x: ' + str(uncertanty_x))
+
+    #y value will give horizontal slice.
+    base_line = avrg_y - org_image[avrg_y][avrg_x][1]
+    plotevents(org_image[avrg_y][:, 1] + base_line)
+    l = plt.axhline(y=avrg_y, color='r')
+    plotevents(image_stripped[avrg_y] + base_line)
+    l = plt.axvline(x=avrg_x, color='r')
+
+    plt.show()
     os.system("afplay woohoo.wav")
 
     center = np.array(center)
