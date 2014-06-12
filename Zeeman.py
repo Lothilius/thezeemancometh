@@ -257,6 +257,7 @@ def main():
 
     plotevents(org_image[avrg_x][:, 1])
     plotevents(org_image[avrg_y][:, 1])
+    os.system("afplay woohoo.wav")
 
     center = np.array(center)
 
