@@ -215,7 +215,7 @@ def main():
     for file in os.listdir("/Users/"):
         if file == 'martin':
             print("Welcome Martin")
-            inputFileDer = "/Users/martin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
+            inputFileDer = "/Volumes/Ket/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
             break
         elif file == 'admin':
             print("Welcome Admin")
