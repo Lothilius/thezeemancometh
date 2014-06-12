@@ -211,6 +211,7 @@ def histo_plot(image, center):
     return hist
 
 def main():
+    #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
     for file in os.listdir("/Users/"):
         if file == 'martin':
             print("Welcome Martin")
