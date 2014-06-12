@@ -273,8 +273,12 @@ def main():
 
     center = np.array(center)
 
-    H = histo_plot(image[977:2277, 1650:3150], center)
-    plt.imshow(H)
+    H = histo_plot(image_proc, center)
+    N , Bins, Patches = plt.hist(center[:, 0], 15)
+
+    n , bins, patches = plt.hist(center[:, 1], 15)
+
+    plt.figure()
 
     plt.show()
 
