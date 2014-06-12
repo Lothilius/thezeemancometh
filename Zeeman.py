@@ -171,10 +171,10 @@ def get_center(edges, image_rgb1):
         accums.extend(h[peaks[:, 0], peaks[:, 1]])
         radii.extend([radius, radius])
 
-    # Draw the most prominent 50 circles
+    # Draw the most prominent 15 circles
     center_array = []
     image = ski.color.gray2rgb(image)
-    for idx in np.argsort(accums)[::-1][:50]:
+    for idx in np.argsort(accums)[::-1][:15]:
         center_x, center_y = centers[idx]
         radius = radii[idx]
         center_array.append([center_x, center_y])
