@@ -193,7 +193,7 @@ def plotevents(datalist):
     #fig, ax = plt.subplots()
     #plt.scatter(x, y, s=20, marker='.', c='blue')
 
-    plt.show()
+    #plt.show()
     return "done"
 
 
