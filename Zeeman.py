@@ -267,9 +267,10 @@ def main():
     l = plt.axhline(y=avrg_y, color='r')
     plotevents(image_stripped[avrg_y] + base_line)
     l = plt.axvline(x=avrg_x, color='r')
-
-    plt.show()
+    plt.margins()
     os.system("afplay woohoo.wav")
+    plt.show()
+
 
     center = np.array(center)
 
@@ -277,8 +278,6 @@ def main():
     N , Bins, Patches = plt.hist(center[:, 0], 15)
 
     n , bins, patches = plt.hist(center[:, 1], 15)
-
-    plt.figure()
 
     plt.show()
 
