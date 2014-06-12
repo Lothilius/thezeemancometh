@@ -222,7 +222,10 @@ def main():
             inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
             break
 
+
     file_name = raw_input("Type in file name: ")
+    #while file_name != "done":
+
     #data = arrayFromFile(inputFileDer+fileNum)
     org_image = jpg_to_array(inputFileDer, file_name)
 
