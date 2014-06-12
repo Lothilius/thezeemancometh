@@ -138,36 +138,24 @@ def strip_color(image_rgb1, color_of_interest):
     elif color_of_interest == 2:
         colorow = np.array([[0, 0, 1.0]] * len(image_rgb[0]))
 
-    image_proc = np.array([colorow] * len(image_rgb))
+    image_stripped = np.array([colorow] * len(image_rgb))
 
-    image_proc = image_proc * image_rgb
+    image_stripped = image_stripped * image_rgb
 
-    image_proc = rgb2gray(image_proc)
-    plt.imshow(image_proc)
-    plt.gray()
-    plt.show()
+    image_stripped = rgb2gray(image_stripped)
 
-    rings = ski.filter.canny(image_proc, sigma=7, low_threshold=0, high_threshold=7)
+    image_proc = ski.filter.canny(image_stripped, sigma=7, low_threshold=0, high_threshold=7)
 
-    img, radii = get_center(rings, image_rgb)
+    img, radii = get_center(image_proc, image_rgb)
 
     print('The red and blue have been stripped from image.')
 
-    plt.imshow(rings)
-    plt.gray()
-    plt.show()
-
-    return rings, radii
+    return image_stripped, image_proc, radii
 
 #Detect radius
 def get_center(edges, image_rgb1):
     #image = ski.img_as_ubyte(edges[977:2277, 1650:3150])
-    image = edges[977:2277, 1650:3150]
-    edges = edges[977:2277, 1650:3150]
-
-    plt.imshow(edges)
-    plt.gray()
-    plt.show()
+    image = edges
 
     hough_radii = np.arange(400, 565, 5)
     hough_res = hough_circle(edges, hough_radii)
