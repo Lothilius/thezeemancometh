@@ -238,7 +238,16 @@ def main():
     elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
         color_of_interest = 2
 
-    image, center = strip_color(org_image, color_of_interest)
+    image_stripped, image_proc, center = strip_color(org_image, color_of_interest)
+    print("Showing image")
+
+    #Show detected rings using canny algo
+    plt.imshow(image_proc, origin='lower')
+    plt.gray()
+
+    #Show the stripped image
+    plt.imshow(image_stripped, origin='lower', alpha=.5)
+    plt.gray()
 
     #Print events in the average of the radius in the y access.
     avrg_x = np.mean(center, axis=0)[0]
