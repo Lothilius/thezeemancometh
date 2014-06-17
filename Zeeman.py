@@ -305,17 +305,14 @@ def main():
 
     center = np.array(center)
 
-    H = histo_plot(image_proc, center)
-    N , Bins, Patches = plt.hist(center[:, 0], 15)
+    #H = histo_plot(image_proc, center)
 
-    n , bins, patches = plt.hist(center[:, 1], 15)
+    #N , Bins, Patches = plt.hist(center[:, 0], 15)
+    #n , bins, patches = plt.hist(center[:, 1], 15)
 
-    plt.show()
+    #plt.show()
 
-    peakL1 = int(raw_input("Type in potential n peak pixel bin: "))
-    peakPrec = int(raw_input("Type in precision: "))
-    peakL1 = ternarySearch(image[1622], peakL1-15, peakL1+15, peakPrec)
-    print(peakL1)
+
 
 
 main()
