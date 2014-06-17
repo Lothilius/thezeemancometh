@@ -278,7 +278,27 @@ def main():
     l = plt.axhline(y=avrg_y, color='r')
     plotevents(image_stripped[avrg_y] + base_line)
     l = plt.axvline(x=avrg_x, color='r')
-    plt.margins()
+    plt.margins(0)
+    os.system("afplay woohoo.wav")
+    plt.show()
+
+
+ #Get first right peak
+    edges_array = getedge(avrg_x, image_proc[avrg_y])
+    peakPrec = uncertanty_x
+    for item in edges_array:
+        peakL1 = ternarySearch(image_stripped[avrg_y], item-15, item+15, peakPrec)
+        l = plt.axvline(x=peakL1, color='r')
+
+
+    field_image = np.array([image_stripped[avrg_y]] * 300)
+    field_image_proc = np.array([image_proc[avrg_y]] * 300)
+    plt.imshow(field_image_proc, origin='lower')
+    plt.imshow(field_image, origin='lower', alpha=.5)
+    plotevents(org_image[avrg_y][:, 1])
+    plotevents(image_stripped[avrg_y])
+    l = plt.axvline(x=avrg_x, color='r')
+    plt.margins(0)
     os.system("afplay woohoo.wav")
     plt.show()
 
