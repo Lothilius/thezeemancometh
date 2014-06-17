@@ -210,6 +210,15 @@ def histo_plot(image, center):
 
     return hist
 
+#Get edges from processed image
+def getedge(center, slice):
+    r1 =[]
+    for i, item in enumerate(slice[center:]):
+        if item != False:
+            r1.append(i)
+    return r1 + center
+
+
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
     for file in os.listdir("/Users/"):
