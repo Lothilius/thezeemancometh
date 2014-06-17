@@ -270,6 +270,8 @@ def main():
     uncertanty_x = np.std(center, axis=0)[1]
     print('Uncertainty in x: ' + str(uncertanty_x))
 
+
+
     #y value will give horizontal slice.
     base_line = avrg_y - org_image[avrg_y][avrg_x][1]
     plotevents(org_image[avrg_y][:, 1] + base_line)
