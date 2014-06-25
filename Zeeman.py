@@ -255,6 +255,7 @@ def main():
     image_stripped, image_proc, center = strip_color(org_image, color_of_interest)
     print("Showing image")
 
+
     #Show detected rings using canny algo
     plt.imshow(image_proc, origin='lower')
     plt.gray()
