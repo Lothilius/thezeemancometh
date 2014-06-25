@@ -218,6 +218,11 @@ def getedge(center, slice):
             r1.append(i)
     return r1 + center
 
+#Calculate the spacial frequency
+def space_freq(rm, rn, rj, etelon=.01):
+    sf = np.divide(1,2 * etelon) * np.divide(np.square(rj) - np.square(rn), (np.square(rm) - np.square(rn)))
+    return sf
+
 
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
