@@ -152,7 +152,7 @@ def strip_color(image_rgb1, color_of_interest):
 
     return image_stripped, image_proc, radii
 
-#Detect radius
+#Use edges to get the center.
 def get_center(edges, image_rgb1):
     #image = ski.img_as_ubyte(edges[977:2277, 1650:3150])
     image = edges
