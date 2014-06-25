@@ -315,6 +315,7 @@ def main():
     l = plt.axvline(x=avrg_x, color='r')
     plt.margins(0)
     os.system("afplay woohoo.wav")
+    plt.subplot_tool()
     plt.show()
 
 
