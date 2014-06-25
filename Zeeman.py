@@ -294,9 +294,16 @@ def main():
     plt.subplot(212)
     edges_array = getedge(avrg_x, image_proc[avrg_y])
     peakPrec = uncertanty_x
-    for item in edges_array:
-        peakL1 = ternarySearch(image_stripped[avrg_y], item-15, item+15, peakPrec)
-        l = plt.axvline(x=peakL1, color='r')
+    peakList = []
+    for i, item in enumerate(edges_array):
+        if i + 1 < len(edges_array):
+            peakL1 = ternarySearch(image_stripped[avrg_y], item, edges_array[i + 1], peakPrec)
+            peakList.append([peakL1, item, edges_array[i + 1]])
+
+    peakList = np.array(peakList)[::2]
+    for each in peakList:
+        l = plt.axvline(x=each[0], color='r')
+    print(np.round(peakList))
 
 
     field_image = np.array([image_stripped[avrg_y]] * 300)
