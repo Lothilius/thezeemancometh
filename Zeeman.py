@@ -257,6 +257,7 @@ def main():
 
 
     #Show detected rings using canny algo
+    plt.subplot(211)
     plt.imshow(image_proc, origin='lower')
     plt.gray()
 
@@ -266,14 +267,14 @@ def main():
 
 
     #Print events in the average of the radius in the y access.
-    avrg_y = np.mean(center, axis=0)[0]
+    avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
     print('Average y value for center: ' + str(avrg_y))
-    uncertanty_y = np.std(center, axis=0)[0]
+    uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
     print('Uncertainty in y: ' + str(uncertanty_y))
 
-    avrg_x = np.mean(center, axis=0)[1]
+    avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
     print('Average x value for center: ' + str(avrg_x))
-    uncertanty_x = np.std(center, axis=0)[1]
+    uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
     print('Uncertainty in x: ' + str(uncertanty_x))
 
 
@@ -286,10 +287,11 @@ def main():
     l = plt.axvline(x=avrg_x, color='r')
     plt.margins(0)
     os.system("afplay woohoo.wav")
-    plt.show()
+    #plt.show()
 
 
  #Get first right peak
+    plt.subplot(212)
     edges_array = getedge(avrg_x, image_proc[avrg_y])
     peakPrec = uncertanty_x
     for item in edges_array:
