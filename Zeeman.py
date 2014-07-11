@@ -302,69 +302,126 @@ def main():
         plt.gray()
 
 
+        #Print events in the average of the radius in the y access.
+        avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
+        print('Average y value for center: ' + str(avrg_y))
+        uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
+        print('Uncertainty in y: ' + str(uncertanty_y))
 
-
-    #Print events in the average of the radius in the y access.
-    avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
-    print('Average y value for center: ' + str(avrg_y))
-    uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
-    print('Uncertainty in y: ' + str(uncertanty_y))
-
-    avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
-    print('Average x value for center: ' + str(avrg_x))
-    uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
-    print('Uncertainty in x: ' + str(uncertanty_x))
+        avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
+        print('Average x value for center: ' + str(avrg_x))
+        uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
+        print('Uncertainty in x: ' + str(uncertanty_x))
 
 
 
-    #y value will give horizontal slice.
-    base_line = avrg_y - org_image[avrg_y][avrg_x][1]
-    plotevents(org_image[avrg_y][:, 1] + base_line)
-    l = plt.axhline(y=avrg_y, color='r')
-    plotevents(image_stripped[avrg_y] + base_line)
-    l = plt.axvline(x=avrg_x, color='r')
-    plt.margins(0)
-    os.system("afplay woohoo.wav")
-    #plt.show()
+        #y value will give horizontal slice.
+        base_line = avrg_y - org_image[avrg_y][avrg_x][1]
+        plotevents(org_image[avrg_y][:, 1] + base_line)
+        l = plt.axhline(y=avrg_y, color='r')
+        plotevents(image_stripped[avrg_y] + base_line)
+        l = plt.axvline(x=avrg_x, color='r')
+        plt.margins(0)
+        os.system("afplay woohoo.wav")
+        #plt.show()
 
 
- #Get first right peak
-    plt.subplot(212)
-    edges_array = getedge(avrg_x, image_proc[avrg_y])
-    peakPrec = uncertanty_x
-    peakList = []
-    for i, item in enumerate(edges_array):
-        if i + 1 < len(edges_array):
-            peakL1 = ternarySearch(image_stripped[avrg_y], item, edges_array[i + 1], peakPrec)
-            peakList.append([peakL1, item, edges_array[i + 1]])
+     #Get first right peak
+        plt.subplot(312)
+        if run == 1:
+            edges_array = getedge(avrg_x, image_proc[avrg_y])
+            peakPrec = uncertanty_x
+            main_peak_list = []
+            for i, item in enumerate(edges_array):
+                if i + 1 < len(edges_array):
+                    peakL1 = ternarySearch(image_stripped[avrg_y], item, edges_array[i + 1], peakPrec)
+                    main_peak_list.append([peakL1, item, edges_array[i + 1]])
 
-    peakList = np.array(peakList)[::2]
-    for each in peakList:
-        l = plt.axvline(x=each[0], color='r')
-    print(np.round(peakList))
+            main_peak_list = np.array(main_peak_list)[::2]
+            for each in main_peak_list:
+                l = plt.axvline(x=each[0], color='r')
+
+            calibration = sorted(main_peak_list[:, 1])
+            calibration = np.append(calibration, main_peak_list[:, 2])
+        else:
+            #Find and Graph lines of main peaks
+            edges_array = sorted(calibration)
+            peakPrec = uncertanty_x
+            main_peak_list = []
+            for i, item in enumerate(edges_array):
+                if i + 1 < len(edges_array):
+                    peakL1 = ternarySearch(image_stripped[avrg_y], item, edges_array[i + 1], peakPrec)
+                    main_peak_list.append([peakL1, item, edges_array[i + 1]])
+
+            main_peak_list = np.round(np.array(main_peak_list)[::2])
+
+            for each in main_peak_list:
+                l = plt.axvline(x=each[0], color='r')
+
+            #Find and Graph lines for 1st secondary peaks
+            jminus_peak_list = []
+            jplus_peak_list = []
+            for i, edge in enumerate(main_peak_list):
+                if i + 1 < len(main_peak_list):
+                    j = i + 1
+                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j])/2
+                    peakL1 = ternarySearch(image_stripped[avrg_y], edge[1] + limit, edge[1], peakPrec)
+                    jminus_peak_list.append([peakL1, edge[1] + limit, edge[1]])
+
+            jminus_peak_list = np.round(np.array(jminus_peak_list))
+
+            for each in jminus_peak_list:
+                l = plt.axvline(x=each[0], color='g')
+
+            #Find and Graph lines for 2nd secondary peaks
+            jplus_peak_list = []
+            for i, edge in enumerate(main_peak_list):
+                if i + 1 < len(main_peak_list):
+                    j = i + 1
+                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j])/2
+                    peakL1 = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] - limit, peakPrec)
+                    jplus_peak_list.append([peakL1, edge[2], edge[2] - limit])
+
+            jplus_peak_list = np.round(np.array(jplus_peak_list))
+
+            for each in jplus_peak_list:
+                l = plt.axvline(x=each[0], color='g')
+
+            print(main_peak_list)
+            print(jminus_peak_list)
+            print(jplus_peak_list)
+
+            sfreq = space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0])
+
+            print(sfreq)
+
+        #Build and graph main image
+        field_image = np.array([image_stripped[avrg_y]] * 300)
+        field_image_proc = np.array([image_proc[avrg_y]] * 300)
+        field_image_proc2 = np.array([image_proc[avrg_y]] * 300)
+
+        plt.imshow(field_image_proc, origin='lower')
+        plt.imshow(field_image_proc2, origin='lower')
+        plt.imshow(field_image, origin='lower', alpha=.5)
+        plotevents(org_image[avrg_y][:, 1])
+        plotevents(image_stripped[avrg_y])
+        l = plt.axvline(x=avrg_x, color='r')
+        plt.margins(0)
+        os.system("afplay woohoo.wav")
+        plt.subplot_tool()
+        plt.show()
+
+        run = 2
 
 
-    field_image = np.array([image_stripped[avrg_y]] * 300)
-    field_image_proc = np.array([image_proc[avrg_y]] * 300)
-    plt.imshow(field_image_proc, origin='lower')
-    plt.imshow(field_image, origin='lower', alpha=.5)
-    plotevents(org_image[avrg_y][:, 1])
-    plotevents(image_stripped[avrg_y])
-    l = plt.axvline(x=avrg_x, color='r')
-    plt.margins(0)
-    os.system("afplay woohoo.wav")
-    plt.subplot_tool()
-    plt.show()
+        center = np.array(center)
 
+        #H = histo_plot(image_proc, center)
 
-    center = np.array(center)
+        #N , Bins, Patches = plt.hist(center[:, 0], 15)
+        #n , bins, patches = plt.hist(center[:, 1], 15)
 
-    #H = histo_plot(image_proc, center)
-
-    #N , Bins, Patches = plt.hist(center[:, 0], 15)
-    #n , bins, patches = plt.hist(center[:, 1], 15)
-
-    #plt.show()
+        #plt.show()
 
 
 
