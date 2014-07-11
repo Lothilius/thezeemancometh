@@ -260,25 +260,38 @@ def main():
             print("Welcome Admin")
             inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
             break
+    run = 1
+    calibration = []
+
+    #create list of image files in inputFileDer directory
+    image_list = os.listdir(inputFileDer)
+
+    while True:
+        if run == 1:
+            file_name = raw_input("Type in B=0 file name: ")
+            #while file_name != "done":
+            color_of_interest = raw_input("What color is of interest? ")
+            if ('Red' in color_of_interest) or ('red' in color_of_interest):
+                color_of_interest = 0
+            elif ('Green' in color_of_interest) or ('green' in color_of_interest):
+                color_of_interest = 1
+            elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
+                color_of_interest = 2
+        else:
+            file_name = "3_4.jpg"
+
+        #data = arrayFromFile(inputFileDer+fileNum)
+        org_image = jpg_to_array(inputFileDer, file_name)
 
 
-    file_name = raw_input("Type in file name: ")
-    #while file_name != "done":
+        if run == 1:
+            image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=7)
+        else:
+            image_stripped, image_proc2, center = strip_color(org_image, color_of_interest, sig=4)
 
-    #data = arrayFromFile(inputFileDer+fileNum)
-    org_image = jpg_to_array(inputFileDer, file_name)
+        #print("Showing image")
 
-    color_of_interest = raw_input("What color is of interest? ")
 
-    if ('Red' in color_of_interest) or ('red' in color_of_interest):
-        color_of_interest = 0
-    elif ('Green' in color_of_interest) or ('green' in color_of_interest):
-        color_of_interest = 1
-    elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
-        color_of_interest = 2
-
-    image_stripped, image_proc, center = strip_color(org_image, color_of_interest)
-    print("Showing image")
 
 
     #Show detected rings using canny algo
