@@ -223,6 +223,31 @@ def space_freq(rm, rn, rj, etelon=.01):
     sf = np.divide(1,2 * etelon) * np.divide(np.square(rj) - np.square(rn), (np.square(rm) - np.square(rn)))
     return sf
 
+#Compare Radius from calibration image and sub radius image
+def cal_center(calcenter, center):
+    dif_x = 0
+    dif_y = 0
+    if calcenter == center:
+        return dif_x, dif_y
+    elif calcenter[0] > center[0]:
+        dif_x = calcenter[0] - center[0]
+        if calcenter[1] > center[1]:
+            dif_y = calcenter[1] - center[1]
+        elif calcenter[1] > center[1]:
+            dif_y = center[1] - calcenter[1]
+        else:
+            pass
+        return dif_x, dif_y
+    else:
+        dif_x = center[0] - calcenter[0]
+        if calcenter[1] > center[1]:
+            dif_y = calcenter[1] - center[1]
+        elif calcenter[1] > center[1]:
+            dif_y = center[1] - calcenter[1]
+        else:
+            pass
+        return dif_x, dif_y
+
 
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
