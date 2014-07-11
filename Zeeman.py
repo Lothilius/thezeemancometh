@@ -128,7 +128,7 @@ def jpg_to_array(file_path, file_name):
     return image
 
 #Remove all but one color
-def strip_color(image_rgb1, color_of_interest):
+def strip_color(image_rgb1, color_of_interest, sig):
     image_rgb = ski.img_as_ubyte(image_rgb1)
 
     if color_of_interest == 0:
