@@ -292,16 +292,16 @@ def main():
         #print("Showing image")
 
 
+        #Show detected rings using canny algorithm
+        plt.subplot(311)
+        plt.imshow(image_proc, origin='lower')
+        plt.gray()
+
+        #Show the stripped down image
+        plt.imshow(image_stripped, origin='lower', alpha=.5)
+        plt.gray()
 
 
-    #Show detected rings using canny algo
-    plt.subplot(211)
-    plt.imshow(image_proc, origin='lower')
-    plt.gray()
-
-    #Show the stripped image
-    plt.imshow(image_stripped, origin='lower', alpha=.5)
-    plt.gray()
 
 
     #Print events in the average of the radius in the y access.
