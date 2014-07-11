@@ -144,7 +144,7 @@ def strip_color(image_rgb1, color_of_interest, sig):
 
     image_stripped = rgb2gray(image_stripped)
 
-    image_proc = ski.filter.canny(image_stripped, sigma=4, low_threshold=0, high_threshold=7)
+    image_proc = ski.filter.canny(image_stripped, sigma=sig, low_threshold=0, high_threshold=7)
 
     img, radii = get_center(image_proc, image_rgb)
 
