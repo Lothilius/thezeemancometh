@@ -262,6 +262,7 @@ def main():
             break
     run = 1
     calibration = []
+    sfreq = []
 
     #create list of image files in inputFileDer directory
     image_list = os.listdir(inputFileDer)
