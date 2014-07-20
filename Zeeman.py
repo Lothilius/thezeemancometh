@@ -388,13 +388,7 @@ def main():
             for each in jplus_peak_list:
                 l = plt.axvline(x=each[0], color='g')
 
-            print(main_peak_list)
-            print(jminus_peak_list)
-            print(jplus_peak_list)
-
-            sfreq = space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0])
-
-            print(sfreq)
+            sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0]), 2)
 
         #Build and graph main image
         field_image = np.array([image_stripped[avrg_y]] * 300)
