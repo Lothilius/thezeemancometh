@@ -267,10 +267,8 @@ def main():
     #create list of image files in inputFileDer directory
     image_list = os.listdir(inputFileDer)
 
-    while True:
+    for item in image_list:
         if run == 1:
-            file_name = raw_input("Type in B=0 file name: ")
-            #while file_name != "done":
             color_of_interest = raw_input("What color is of interest? ")
             if ('Red' in color_of_interest) or ('red' in color_of_interest):
                 color_of_interest = 0
@@ -279,8 +277,11 @@ def main():
             elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
                 color_of_interest = 2
         else:
-            file_name = "3_4.jpg"
+            file_name = item
 
+            #Strip file name in to the amps for the file.
+            amps = item.replace('.JPG', '').replace('_', '.')
+            amps = float(amps)
         #data = arrayFromFile(inputFileDer+fileNum)
         org_image = jpg_to_array(inputFileDer, file_name)
 
@@ -290,11 +291,9 @@ def main():
         else:
             image_stripped, image_proc2, center = strip_color(org_image, color_of_interest, sig=4)
 
-        #print("Showing image")
-
-
         #Show detected rings using canny algorithm
         plt.subplot(311)
+        plt.suptitle(file_name)
         plt.imshow(image_proc, origin='lower')
         plt.gray()
 
