@@ -102,7 +102,7 @@ def dataTofile(dataArray):
 
 #Create array of data for creating the Delta enregy function.
 def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
-    rad1 = radius(peakL1,peakR1) / 2
+    rad1 = radius(peakL1, peakR1) / 2
     halfPoint = peakL1 + rad1
     rad2 = radius(peakL2, halfPoint)
     radI = radius(peakI, halfPoint)
@@ -115,10 +115,10 @@ def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
 def ternarySearch(f, left, right, absolutePrecision):
     #left and right are the current bounds; the maximum is between them
     if (right - left) < absolutePrecision:
-        return (left + right)/2
+        return (left + right) / 2
 
-    leftThird = (2*left + right)/3
-    rightThird = (left + 2*right)/3
+    leftThird = (2 * left + right) / 3
+    rightThird = (left + 2 * right) / 3
 
     if f[leftThird] < f[rightThird]:
         return ternarySearch(f, leftThird, right, absolutePrecision)
@@ -214,7 +214,7 @@ def histo_plot(image, center):
 
     for each in center:
         hist[each[0]][each[1]] += 1
-    H, xedges, yedges = np.histogram2d(center[:,0], center[:,1], bins=25)
+    H, xedges, yedges = np.histogram2d(center[:, 0], center[:, 1], bins=25)
     plt.pcolor(xedges, yedges, H)
     plt.show()
 
@@ -223,7 +223,7 @@ def histo_plot(image, center):
 
 #Get edges from processed image
 def getedge(center, slice):
-    r1 =[]
+    r1 = []
     for i, item in enumerate(slice[center:]):
         if item != False:
             r1.append(i)
