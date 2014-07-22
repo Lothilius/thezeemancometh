@@ -38,7 +38,7 @@ def peaks(data):
 
     for pixel in data[1565]:
         if len(pixel) == 2:
-            pixel = pixel.replace("0.","0")
+            pixel = pixel.replace("0.", "0")
         if opStack.isEmpty():
             opStack.push(pixel)
             indx.push(i)
@@ -50,7 +50,7 @@ def peaks(data):
                 i = i + 1
             else:
                 i = i + 1
-        elif last < pixel: #and i - indx.peek() >= 10:
+        elif last < pixel:  #and i - indx.peek() >= 10:
             if i - indx.peek() <= 10:
                 indx.pop()
                 opStack.pop()
@@ -67,7 +67,7 @@ def peaks(data):
         lasti = i
         vlast = last
 
-    thePeaks = [0]*4752
+    thePeaks = [0] * 4752
     for i, d in zip(indx, opStack):
         thePeaks[i] = d
 
@@ -76,16 +76,16 @@ def peaks(data):
 
 # Return Radius given two peaks on the same ring
 def radius(peakL, peakR):
-   rad = (peakR - peakL)
-   return rad
+    rad = (peakR - peakL)
+    return rad
 
 
 #write an array to a file.
 def arrayTofile(dataArray, fileNum):
-    fileName = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/ImageData"+fileNum+"_a.csv"
+    fileName = "/Users/admin/Dropbox/School/Spring-2014/PHY-474/Labs/Zeeman/play_data/dataManipulation/ImageData" + fileNum + "_a.csv"
     print(fileName)
     with open(fileName, 'w+', newline='') as csvfile:
-        linewriter = csv.writer(csvfile, delimiter= ",")
+        linewriter = csv.writer(csvfile, delimiter=",")
         for each in dataArray:
             linewriter.writerow([each])
     print("done")
