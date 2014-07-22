@@ -465,22 +465,29 @@ def main():
         l = plt.axvline(x=avrg_x, color='r')
         plt.margins(0)
         os.system("afplay woohoo.wav")
-        plt.subplot_tool()
-        plt.show()
-
-        run = 2
 
 
-        center = np.array(center)
+        run += 1
 
-        #H = histo_plot(image_proc, center)
+    plt.subplot_tool()
+    dataTofile(measured_data)
+    print(measured_data)
+    print(main_peak_list)
+    print(jplus_peak_list)
+    print(jminus_peak_list)
+    x = final_data[:, 0]
+    un_x = final_data[:, 1]
+    y = final_data[:, 2]
+    un_y = final_data[:, 3]
 
-        #N , Bins, Patches = plt.hist(center[:, 0], 15)
-        #n , bins, patches = plt.hist(center[:, 1], 15)
-
-        #plt.show()
-
-
-
+    os.system("afplay about_time.m4a")
+    plt.subplot(5,4,10)
+    plt.errorbar(y, x, xerr=un_x, yerr=un_y, fmt='+')
+    plt.ylabel('Spatial Frequency')
+    plt.xlabel('Magnetic Field')
+    #plt.xlim(2, 6)
+    #plt.ylim(0, 1)
+    plt.subplot_tool()
+    plt.show()
 
 main()
