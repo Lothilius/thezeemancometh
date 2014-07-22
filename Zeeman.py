@@ -1,4 +1,3 @@
-
 __author__ = 'Lothilius'
 
 import csv
@@ -25,6 +24,7 @@ def arrayFromFile(filename):
         for row in spamreader:
             dataArray.append(row)
     return dataArray[1565]
+
 
 #Reduce data to a few peak points
 def peaks(data):
@@ -72,10 +72,12 @@ def peaks(data):
 
     return thePeaks
 
+
 # Return Radius given two peaks on the same ring
 def radius(peakL, peakR):
    rad = (peakR - peakL)
    return rad
+
 
 #write an array to a file.
 def arrayTofile(dataArray, fileNum):
@@ -87,12 +89,14 @@ def arrayTofile(dataArray, fileNum):
             linewriter.writerow([each])
     print("done")
 
+
 #Create file from array with finaldata.csv as the name and append.
 def dataTofile(dataArray):
     fileName = "Finaldata2.csv"
     with open(fileName, 'a', newline='') as csvfile:
         linewriter = csv.writer(csvfile, delimiter= ",")
         linewriter.writerow(dataArray)
+
 
 #Create array of data for creating the Delta enregy function.
 def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
@@ -103,6 +107,7 @@ def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
     radO = radius(peakO, halfPoint)
     radArray = [rad1, rad2, radI, radO]
     return radArray
+
 
 #Ternary Search
 def ternarySearch(f, left, right, absolutePrecision):
@@ -126,6 +131,7 @@ def jpg_to_array(file_path, file_name):
     #plt.imshow(image)
     #plt.show()
     return image
+
 
 #Remove all but one color
 def strip_color(image_rgb1, color_of_interest, sig):
@@ -151,6 +157,7 @@ def strip_color(image_rgb1, color_of_interest, sig):
     print('The red and blue have been stripped from image.')
 
     return image_stripped, image_proc, radii
+
 
 #Use edges to get the center.
 def get_center(edges, image_rgb1):
@@ -183,6 +190,7 @@ def get_center(edges, image_rgb1):
 
     return image, center_array
 
+
 #plot data
 def plotevents(datalist):
     x = range(0, len(datalist))
@@ -210,6 +218,7 @@ def histo_plot(image, center):
 
     return hist
 
+
 #Get edges from processed image
 def getedge(center, slice):
     r1 =[]
@@ -218,10 +227,12 @@ def getedge(center, slice):
             r1.append(i)
     return r1 + center
 
+
 #Calculate the spacial frequency
 def space_freq(rm, rn, rj, etelon=.01):
     sf = np.divide(1,2 * etelon) * np.divide(np.square(rj) - np.square(rn), (np.square(rm) - np.square(rn)))
     return sf
+
 
 #Compare Radius from calibration image and sub radius image
 def cal_center(calcenter, center):
@@ -284,7 +295,6 @@ def main():
             amps = float(amps)
         #data = arrayFromFile(inputFileDer+fileNum)
         org_image = jpg_to_array(inputFileDer, file_name)
-
 
         if run == 1:
             image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=7)
