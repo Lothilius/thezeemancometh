@@ -309,6 +309,7 @@ def main():
     b_field = mag_field()
     measured_data = []
 
+    file_name = raw_input("Type in B=0 file name: ")
 
     #create list of image files in inputFileDer directory
     image_list = os.listdir(inputFileDer)
