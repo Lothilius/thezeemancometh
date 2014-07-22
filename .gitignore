@@ -38,5 +38,6 @@ nosetests.xml
 
 *.csv
 *.wav
+*.m4a
 
 testing.py
