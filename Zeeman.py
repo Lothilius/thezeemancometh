@@ -421,7 +421,7 @@ def main():
             for i, edge in enumerate(main_peak_list):
                 if i + 1 < len(main_peak_list):
                     j = i + 1
-                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j])/2
+                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
                     peakL1 = ternarySearch(image_stripped[avrg_y], edge[1] + limit, edge[1], peakPrec)
                     jminus_peak_list.append([peakL1, edge[1] + limit, edge[1]])
 
@@ -435,7 +435,7 @@ def main():
             for i, edge in enumerate(main_peak_list):
                 if i + 1 < len(main_peak_list):
                     j = i + 1
-                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j])/2
+                    limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
                     peakL1 = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] - limit, peakPrec)
                     jplus_peak_list.append([peakL1, edge[2], edge[2] - limit])
 
