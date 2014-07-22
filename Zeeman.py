@@ -232,8 +232,8 @@ def getedge(center, slice):
 
 
 #Calculate the spacial frequency
-def space_freq(rm, rn, rj, etelon=.01):
-    sf = np.divide(1,2 * etelon) * np.divide(np.square(rj) - np.square(rn), (np.square(rm) - np.square(rn)))
+def space_freq(rn, rm, rj, etelon=.01):
+    sf = np.divide(1, 2 * etelon) * np.divide(np.square(rn) - np.square(rj), (np.square(rn) - np.square(rm)))
     return sf
 
 
