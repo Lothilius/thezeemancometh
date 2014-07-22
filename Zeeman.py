@@ -93,10 +93,11 @@ def arrayTofile(dataArray, fileNum):
 
 #Create file from array with finaldata.csv as the name and append.
 def dataTofile(dataArray):
-    fileName = "Finaldata2.csv"
-    with open(fileName, 'a', newline='') as csvfile:
-        linewriter = csv.writer(csvfile, delimiter= ",")
-        linewriter.writerow(dataArray)
+    fileName = "Finaldata.csv"
+    with open(fileName, 'w') as csvfile:
+        linewriter = csv.writer(csvfile, delimiter=",")
+        linewriter.writerows(dataArray)
+    csvfile.close()
 
 
 #Create array of data for creating the Delta enregy function.
