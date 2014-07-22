@@ -154,6 +154,7 @@ def strip_color(image_rgb1, color_of_interest, sig):
 
     image_proc = ski.filter.canny(image_stripped, sigma=sig, low_threshold=0, high_threshold=7)
 
+    #Uses up the majority of time.
     img, radii = get_center(image_proc, image_rgb)
 
     print('The red and blue have been stripped from image.')
