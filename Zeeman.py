@@ -378,8 +378,13 @@ def main():
         #plt.show()
 
 
-     #Get first right peak
-        plt.subplot(312)
+        #Get first right peak
+        if run <= 4:
+            placement = run + 4
+        else:
+            placement = run + 12
+
+        plt.subplot(5, 4, placement)
         if run == 1:
             edges_array = getedge(avrg_x, image_proc[avrg_y])
             peakPrec = uncertanty_x
