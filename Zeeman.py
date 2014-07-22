@@ -444,7 +444,13 @@ def main():
             for each in jplus_peak_list:
                 l = plt.axvline(x=each[0], color='g')
 
+            measured_data.append([amps, main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0], jplus_peak_list[0][0]])
+
             sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0]), 2)
+            final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
+            sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jplus_peak_list[0][0]), 2)
+            final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
+            print(np.round(final_data, 2))
 
         #Build and graph main image
         field_image = np.array([image_stripped[avrg_y]] * 300)
