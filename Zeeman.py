@@ -337,9 +337,15 @@ def main():
         else:
             image_stripped, image_proc2, center = strip_color(org_image, color_of_interest, sig=4)
 
-        #Show detected rings using canny algorithm
-        plt.subplot(311)
-        plt.suptitle(file_name)
+
+        #Show detected rings using the canny algorithm
+        if run <= 4:
+            placement = run
+        else:
+            placement = run + 8
+
+        plt.subplot(5, 4, placement)
+        plt.title(file_name)
         plt.imshow(image_proc, origin='lower')
         plt.gray()
 
