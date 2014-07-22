@@ -304,7 +304,11 @@ def main():
             break
     run = 1
     calibration = []
-    sfreq = []
+    final_data = np.array([[0, 0, 0, 0]])
+    uncertainty_b = .05
+    b_field = mag_field()
+    measured_data = []
+
 
     #create list of image files in inputFileDer directory
     image_list = os.listdir(inputFileDer)
