@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
 import pylab as P
+import time
 
 from skimage import data, filter, exposure
 from skimage.color import rgb2gray
