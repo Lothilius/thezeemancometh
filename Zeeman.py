@@ -206,7 +206,6 @@ def cal_center(calcenter, center):
             pass
         return dif_x, dif_y
 
-
 #Get magnetic field function
 def mag_field():
     raw_mag = [[3, .465], [3.4, .530], [3.8, .590], [4.2, .651], [4.6, .712], [5, .774],
@@ -246,6 +245,8 @@ def main():
             print("Welcome Admin")
             inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
             break
+
+    #Initialize Some variables
     run = 1
     calibration = []
     final_data = np.array([[0, 0, 0, 0]])
@@ -298,12 +299,13 @@ def main():
         plt.gray()
 
 
-        #Print events in the average of the radius in the y access.
+        #Print average of the center in the y axis.
         avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
         print('Average y value for center: ' + str(avrg_y))
         uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
         print('Uncertainty in y: ' + str(uncertanty_y))
 
+        #Print average of the center in the x axis.
         avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
         print('Average x value for center: ' + str(avrg_x))
         uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
@@ -342,10 +344,12 @@ def main():
             for each in main_peak_list:
                 l = plt.axvline(x=each[0], color='r')
 
+            #Array of edges used to define boundaries for the primary peaks
             calibration = sorted(main_peak_list[:, 1])
             calibration = np.append(calibration, main_peak_list[:, 2])
+
         else:
-            #Find and Graph lines of main peaks
+            #Find and Graph lines of main peaks for non calibration files.
             edges_array = sorted(calibration)
             peakPrec = uncertanty_x
             main_peak_list = []
@@ -395,6 +399,8 @@ def main():
             sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jplus_peak_list[0][0]), 2)
             final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
             print(np.round(final_data, 2))
+
+
 
         #Build and graph main image
         field_image = np.array([image_stripped[avrg_y]] * 300)
