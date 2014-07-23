@@ -229,6 +229,24 @@ def mag_field():
 
     return polynomial
 
+#Find and plot best fit line
+def best_fit(data_x, data_y):
+    x = data_x
+    y = data_y
+
+    coefficients = np.polyfit(x, y, 1)
+    polynomial = np.poly1d(coefficients)
+    ys = polynomial(x)
+    #print coefficients
+    #print polynomial
+
+    plt.subplot(5, 4, 10)
+    #plt.plot(x, ys, xerr=0, yerr=(y * 0.05))
+    plt.errorbar(x, ys, xerr=0, yerr=(y * 0.05))
+    plt.ylabel('Measured Magnetic Field')
+    plt.xlabel('Amps Applied')
+
+
 
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
