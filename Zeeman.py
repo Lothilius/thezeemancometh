@@ -267,6 +267,8 @@ def main():
     uncertainty_b = .05
     b_field = mag_field()
     measured_data = []
+    sfreq_minus = []
+    sfreq_plus = []
 
     file_name = raw_input("Type in B=0 file name: ")
 
@@ -406,7 +408,8 @@ def main():
             for each in jplus_peak_list:
                 l = plt.axvline(x=each[0], color='g')
 
-            measured_data.append([amps, main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0], jplus_peak_list[0][0]])
+            sfreq_minus = []
+            sfreq_plus = []
 
             sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0]), 2)
             final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
