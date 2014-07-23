@@ -161,19 +161,10 @@ def plotevents(datalist):
     return "done"
 
 
-#Create histogram plot for center of circles.
-def histo_plot(image, center):
-    h = np.array([0] * len(image[0]))
-    hist = np.array([h] * len(image))
-
-    for each in center:
-        hist[each[0]][each[1]] += 1
-    H, xedges, yedges = np.histogram2d(center[:, 0], center[:, 1], bins=25)
-    plt.pcolor(xedges, yedges, H)
-    plt.show()
-
-    return hist
-
+#Create histogram for array of values.
+def histo_plot(data, num_bins=10):
+    plt.figure('Data Histogram')
+    n, bins, patches = plt.hist(data, bins=num_bins)
 
 #Get edges from processed image
 def getedge(center, slice):
