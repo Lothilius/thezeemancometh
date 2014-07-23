@@ -220,16 +220,12 @@ def mag_field():
     coefficients = np.polyfit(x, y, 1)
     polynomial = np.poly1d(coefficients)
     ys = polynomial(x)
-    print coefficients
-    print polynomial
 
     plt.subplot(5, 4, 9)
     #plt.plot(x, ys, xerr=0, yerr=(y * 0.05))
     plt.errorbar(x, ys, xerr=0, yerr=(y * 0.05))
     plt.ylabel('Measured Magnetic Field')
     plt.xlabel('Amps Applied')
-    plt.xlim(2, 6)
-    plt.ylim(0, 1)
 
     return polynomial
 
