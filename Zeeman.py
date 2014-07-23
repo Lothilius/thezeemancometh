@@ -411,10 +411,34 @@ def main():
             sfreq_minus = []
             sfreq_plus = []
 
-            sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jminus_peak_list[0][0]), 2)
-            final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
-            sfreq = np.round(space_freq(main_peak_list[0][0], main_peak_list[1][0], jplus_peak_list[0][0]), 2)
-            final_data = np.append(final_data, [[sfreq, uncertanty_x, b_field(amps), uncertainty_b * .01]], axis=0)
+            for i, each in enumerate(main_peak_list):
+                if i < len(main_peak_list) - 1:
+                    measured_data.append([amps, main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0], jplus_peak_list[i][0]])
+
+                    sfreq_minus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0]), 2))
+                    sfreq_plus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jplus_peak_list[i][0]), 2))
+
+            #build spacial frequency array of values using all peaks
+            sfm_mean = np.round(np.mean(sfreq_minus), decimals=2)
+            sfp_mean = np.round(np.mean(sfreq_plus), decimals=2)
+
+            #Create uncertainty based on standard deviation
+            un_sfm = np.round(np.std(sfreq_minus), decimals=2)
+            un_sfp = np.round(np.std(sfreq_plus), decimals=2)
+
+            print(np.round(sfreq_minus, 2))
+            print(np.round(sfreq_plus, 2))
+
+            #Place data in to final j array
+            if run == 2:
+                final_minus = [[sfm_mean, un_sfm, b_field(amps), uncertainty_b * .01]]
+                final_plus = [[sfp_mean, un_sfp, b_field(amps), uncertainty_b * .01]]
+            else:
+                final_minus = np.append(final_minus, [[sfm_mean, un_sfm, b_field(amps), uncertainty_b * .01]], axis=0)
+                final_plus = np.append(final_plus, [[sfp_mean, un_sfp, b_field(amps), uncertainty_b * .01]], axis=0)
+
+            final_data = np.append(final_data, [[sfm_mean, un_sfm, b_field(amps), uncertainty_b * .01]], axis=0)
+            final_data = np.append(final_data, [[sfp_mean, un_sfp, b_field(amps), uncertainty_b * .01]], axis=0)
             print(np.round(final_data, 2))
 
 
