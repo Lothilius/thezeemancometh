@@ -242,7 +242,7 @@ def best_fit(data_x, data_y):
 
     plt.subplot(5, 4, 10)
     #plt.plot(x, ys, xerr=0, yerr=(y * 0.05))
-    plt.errorbar(x, ys, xerr=0, yerr=(y * 0.05))
+    plt.errorbar(ys, xerr=0, yerr=0)
     plt.ylabel('Measured Magnetic Field')
     plt.xlabel('Amps Applied')
 
