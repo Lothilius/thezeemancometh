@@ -27,53 +27,6 @@ def arrayFromFile(filename):
     return dataArray[1565]
 
 
-#Reduce data to a few peak points
-def peaks(data):
-    opStack = MyQue.Stack()
-    indx = MyQue.Stack()
-    i = 0
-    last = 0
-    lasti = 0
-    vlast = 0
-
-    for pixel in data[1565]:
-        if len(pixel) == 2:
-            pixel = pixel.replace("0.", "0")
-        if opStack.isEmpty():
-            opStack.push(pixel)
-            indx.push(i)
-            i = i + 1
-        elif last > pixel:
-            if vlast <= last and last != opStack.peek() and i - indx.peek() <= 3:
-                indx.push(lasti)
-                opStack.push(last)
-                i = i + 1
-            else:
-                i = i + 1
-        elif last < pixel:  #and i - indx.peek() >= 10:
-            if i - indx.peek() <= 10:
-                indx.pop()
-                opStack.pop()
-                indx.push(i)
-                opStack.push(pixel)
-                i = i + 1
-            else:
-                indx.push(i)
-                opStack.push(pixel)
-                i = i + 1
-        else:
-            i = i + 1
-        last = pixel
-        lasti = i
-        vlast = last
-
-    thePeaks = [0] * 4752
-    for i, d in zip(indx, opStack):
-        thePeaks[i] = d
-
-    return thePeaks
-
-
 # Return Radius given two peaks on the same ring
 def radius(peakL, peakR):
     rad = (peakR - peakL)
