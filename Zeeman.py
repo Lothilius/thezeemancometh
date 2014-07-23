@@ -462,18 +462,19 @@ def main():
 
     plt.subplot_tool()
     dataTofile(measured_data)
-    print(measured_data)
-    print(main_peak_list)
-    print(jplus_peak_list)
-    print(jminus_peak_list)
-    x = final_data[:, 0]
-    un_x = final_data[:, 1]
-    y = final_data[:, 2]
-    un_y = final_data[:, 3]
+    #print(measured_data)
+
+    #Transfer final data to x and y with errors for error plot
+    y = final_data[:, 0]
+    un_y = final_data[:, 1]
+    x = final_data[:, 2]
+    un_x = final_data[:, 3]
 
     os.system("afplay about_time.m4a")
-    plt.subplot(5,4,10)
-    plt.errorbar(y, x, xerr=un_x, yerr=un_y, fmt='+')
+    best_fit(final_minus[:, 2], final_minus[:, 0])
+    best_fit(final_plus[:, 2], final_plus[:, 0])
+
+    plt.errorbar(x, y, xerr=un_x, yerr=un_y, fmt='+')
     plt.ylabel('Spatial Frequency')
     plt.xlabel('Magnetic Field')
     #plt.xlim(2, 6)
