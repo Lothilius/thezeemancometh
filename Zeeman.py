@@ -333,10 +333,8 @@ def get_calibration(inputFileDer, file_name):
 
         main_peak_list = main_peaks
 
-        main_peak_list = np.array(main_peak_list)
-
         #Array of edges used to define boundaries for the primary peaks
-        calibration = main_peaks
+        calibration = np.array(main_peak_list)
 
         #Build and graph main image
         field_image = np.array([image_stripped[avrg_y]] * 300)
@@ -448,7 +446,6 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         jminus_peak_list = np.array(jminus_peak_list)
 
-
         for each in jminus_peak_list:
             l = plt.axvline(x=each[0], color='b')
 
@@ -462,8 +459,6 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
                 jplus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
 
         jplus_peak_list = np.array(jplus_peak_list)
-
-        print(jplus_peak_list)
 
         for each in jplus_peak_list:
             l = plt.axvline(x=each[0], color='g')
