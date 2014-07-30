@@ -483,8 +483,8 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         sfp_mean = np.round(np.mean(sfreq_plus), decimals=2)
 
         #Create uncertainty based on standard deviation
-        un_sfm = np.round(np.std(sfreq_minus), decimals=2)
-        un_sfp = np.round(np.std(sfreq_plus), decimals=2)
+        un_sfm = np.round(np.std(sfreq_minus) / sqrt(len(sfreq_minus)), decimals=2)
+        un_sfp = np.round(np.std(sfreq_plus) / sqrt(len(sfreq_minus)), decimals=2)
 
         print(np.round(sfreq_minus, 2))
         print(np.round(sfreq_plus, 2))
