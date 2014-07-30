@@ -15,6 +15,9 @@ from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
 
 
+
+measured_data = []
+
 #Pull data from CSV file
 def arrayFromFile(filename):
     """Given an external file containing numbers,
