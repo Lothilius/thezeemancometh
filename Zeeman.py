@@ -587,14 +587,16 @@ def main():
     x = final_data[:, 2]
     un_x = final_data[:, 3]
 
+    plt.figure()
+
     os.system("afplay about_time.m4a")
     best_fit(final_minus[:, 2], final_minus[:, 0])
     best_fit(final_plus[:, 2], final_plus[:, 0])
 
     plt.errorbar(x, y, xerr=un_x, yerr=un_y, fmt='+')
-    plt.ylabel('Spatial Frequency')
-    plt.xlabel('Magnetic Field')
-    #plt.xlim(2, 6)
+    plt.ylabel(r'$\Delta{\nu}  (mm^{-1})$')
+    plt.xlabel('Magnetic Field (T)')
+    plt.xlim(x[0] * .95, x[-1] * 1.02)
     #plt.ylim(0, 1)
     plt.subplot_tool()
     duration = time.time() - start
