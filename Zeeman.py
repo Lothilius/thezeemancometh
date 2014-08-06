@@ -16,6 +16,7 @@ from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
 
 measured_data = []
+start = time.time()
 
 #Pull data from CSV file
 def arrayFromFile(filename):
@@ -572,6 +573,10 @@ def main():
     #plt.xlim(2, 6)
     #plt.ylim(0, 1)
     plt.subplot_tool()
+    duration = time.time() - start
+
+    print "Program duration: ", duration/60
+
     plt.show()
 
 main()
