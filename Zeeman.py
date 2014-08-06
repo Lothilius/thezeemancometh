@@ -528,15 +528,17 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
-    for file in os.listdir("/Volumes/"):
-        if file == 'Ket':
-            print("Welcome Martin")
-            inputFileDer = "/Volumes/Ket/Users/Martin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
-            break
-        elif file == 'admin':
-            print("Welcome Admin")
-            inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
-            break
+    user_name = getpass.getuser()
+
+    if user_name == 'martin':
+        print("Welcome Martin")
+        inputFileDer = "/Volumes/Ket/Users/Martin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
+    elif user_name == 'admin':
+        print("Welcome Admin")
+        inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
+    else:
+        print("Welcome ", str(user_name))
+        inputFileDer = raw_input("Please enter directory of image files ending with a slash: ")
 
     #Initialize Some variables
     run = 1
