@@ -274,10 +274,13 @@ def get_calibration(inputFileDer, file_name):
 
         #Show detected rings using the canny algorithm
         #plt.subplot(5, 4, 1)
-        plt.subplot(2, 1, 1)
+        plt.figure(1)
+        # plt.subplot(2, 1, 1)
+        amps = 0.0
+        amps = str(amps) + ' amps'
+        plt.title(amps)
         plt.ylabel('Pixel Bin')
         plt.xlabel('Pixel Bin')
-        plt.title(file_name)
         plt.imshow(image_proc, origin='lower')
         plt.gray()
 
