@@ -388,8 +388,8 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         placement = run + 8
 
         #plt.subplot(5, 4, placement)
-        plt.subplot(2, 1, 1)
-        plt.title(file_name)
+        #plt.subplot(2, 1, 1)
+        plt.title(str(amps) + 'amps')
         plt.imshow(image_proc, origin='lower')
         plt.gray()
 
@@ -429,7 +429,8 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         placement = run + 12
 
         #plt.subplot(5, 4, placement)
-        plt.subplot(2, 1, 2)
+        #plt.subplot(2, 1, 2)
+        plt.title(amps)
 
         #Find and Graph lines of main peaks for non calibration files.
         edges_array = calibration
@@ -442,9 +443,6 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         main_peak_list = np.array(main_peak_list)
 
-        for each in main_peak_list:
-            l = plt.axvline(x=each[0], color='r')
-
         #Find and Graph lines for 1st secondary peaks
         jminus_peak_list = []
         for i, edge in enumerate(main_peak_list):
@@ -456,9 +454,6 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         jminus_peak_list = np.array(jminus_peak_list)
 
-        for each in jminus_peak_list:
-            l = plt.axvline(x=each[0], color='b')
-
         #Find and Graph lines for 2nd secondary peaks
         jplus_peak_list = []
         for i, edge in enumerate(main_peak_list):
@@ -469,9 +464,6 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
                 jplus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
 
         jplus_peak_list = np.array(jplus_peak_list)
-
-        for each in jplus_peak_list:
-            l = plt.axvline(x=each[0], color='g')
 
         sfreq_minus = []
         sfreq_plus = []
@@ -488,13 +480,13 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         sfp_mean = np.round(np.mean(sfreq_plus), decimals=2)
 
         #Create uncertainty based on standard deviation
-        un_sfm = np.round(np.std(sfreq_minus) / sqrt(len(sfreq_minus)), decimals=2)
-        un_sfp = np.round(np.std(sfreq_plus) / sqrt(len(sfreq_minus)), decimals=2)
+        un_sfm = np.round((np.std(sfreq_minus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
+        un_sfp = np.round((np.std(sfreq_plus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
 
         print(np.round(sfreq_minus, 2))
         print(np.round(sfreq_plus, 2))
 
-        #Build and graph main image
+        #Build and graph field image
         field_image = np.array([image_stripped[avrg_y]] * 300)
         field_image_proc = np.array([image_proc[avrg_y]] * 300)
         #field_image_proc2 = np.array([image_proc[avrg_y]] * 300)
@@ -502,14 +494,34 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         plt.imshow(field_image_proc, origin='lower')
         #plt.imshow(field_image_proc2, origin='lower')
         plt.imshow(field_image, origin='lower', alpha=.5)
-        plotevents(org_image[avrg_y][:, 1])
+        l = plt.axvline(x=avrg_x, color='r')
+
+        plt.ylabel('Intensity')
+        plt.xlabel('Pixel Bin')
+        plt.xlim(avrg_x * .95, main_peak_list[-1][0] * 1.10)
+
+        plt.margins(0)
+
+
+        l = plt.axvline(x=avrg_x, color='r')
+
+        for each in main_peak_list:
+            l = plt.axvline(x=each[0], color='r')
+        for each in jminus_peak_list:
+            l = plt.axvline(x=each[0], color='b')
+        for each in jplus_peak_list:
+            l = plt.axvline(x=each[0], color='g')
+
+        #plotevents(org_image[avrg_y][:, 1])
         plotevents(image_stripped[avrg_y])
         l = plt.axvline(x=avrg_x, color='r')
         plt.ylabel('Intensity')
         plt.xlabel('Pixel Bin')
+        plt.xlim(avrg_x * .95, main_peak_list[-1][0] * 1.10)
+
         plt.margins(0)
 
-        plt.show()
+        #plt.show()
 
         return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
 
