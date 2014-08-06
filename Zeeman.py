@@ -233,11 +233,13 @@ def mag_field():
     ys = polynomial(x)
 
     #plt.subplot(5, 4, 9)
-    #plt.plot(x, ys, xerr=0, yerr=(y * 0.05))
-    plt.errorbar(x, ys, xerr=0, yerr=(y * 0.05))
-    plt.ylabel('Measured Magnetic Field')
-    plt.xlabel('Amps Applied')
-    plt.xlim(x[0] * .95, x[-1:] * 1.05)
+    plt.figure(0)
+    plt.errorbar(x, y, color='k', ecolor='red', xerr=0, yerr=(y * 0.008), marker='o', markersize=4.0, linestyle='')
+    plt.plot(x, ys)
+
+    plt.ylabel('Measured Magnetic Field (T)')
+    plt.xlabel('Applied Current (amps)')
+    plt.xlim(x[0] * .95, x[-1] * 1.02)
     plt.show()
 
     return polynomial
