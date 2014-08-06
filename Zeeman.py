@@ -543,7 +543,7 @@ def main():
     #Initialize Some variables
     run = 1
     final_data = np.array([[0, 0, 0, 0]])
-    uncertainty_b = .05
+    uncertainty_b = .008
     global measured_data
     b_field = mag_field()
 
