@@ -343,7 +343,6 @@ def get_calibration(inputFileDer, file_name):
         #Build and graph main image
         field_image = np.array([image_stripped[avrg_y]] * 300)
         field_image_proc = np.array([image_proc[avrg_y]] * 300)
-        #field_image_proc2 = np.array([image_proc[avrg_y]] * 300)
 
         #Plot Intensity field with plot, peaks, and edges
         #plt.subplot(5, 4, 1)
