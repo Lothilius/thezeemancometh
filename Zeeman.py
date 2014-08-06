@@ -252,9 +252,8 @@ def best_fit(data_x, data_y):
     coefficients = np.polyfit(x, y, 1)
     polynomial = np.poly1d(coefficients)
     ys = polynomial(x)
-    #print coefficients
-    #print polynomial
-    print(ys)
+    # print coefficients
+    print polynomial
 
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
