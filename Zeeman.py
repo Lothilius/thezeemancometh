@@ -15,8 +15,6 @@ from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
 from skimage.draw import circle_perimeter
 
-
-
 measured_data = []
 
 #Pull data from CSV file
