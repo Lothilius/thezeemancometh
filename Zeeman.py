@@ -347,21 +347,27 @@ def get_calibration(inputFileDer, file_name):
 
         #Plot Intensity field with plot, peaks, and edges
         #plt.subplot(5, 4, 1)
-        plt.subplot(2, 1, 2)
-
-        for each in main_peak_list:
-             l = plt.axvline(x=each[0], color='r')
-
+        plt.figure(2, figsize=(5, 1.5))
         plt.imshow(field_image_proc, origin='lower')
         #plt.imshow(field_image_proc2, origin='lower')
         plt.imshow(field_image, origin='lower', alpha=.5)
-        # plotevents(org_image[avrg_y][:, 1])
+        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+        l = plt.axvline(x=avrg_x, color='r')
+        plt.margins(0)
+
+
+        #Plot intensities
+        plt.figure(3, figsize=(5, 1.5))
+        for each in main_peak_list:
+             l = plt.axvline(x=each[0], color='r')
         plotevents(image_stripped[avrg_y])
         l = plt.axvline(x=avrg_x, color='r')
         plt.margins(0)
-        os.system("afplay woohoo.wav")
-        plt.ylabel('Intensity')
+        plt.ylabel('Intensity ')
         plt.xlabel('Pixel Bin')
+        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+
+        os.system("afplay woohoo.wav")
 
         plt.show()
 
