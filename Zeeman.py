@@ -596,7 +596,7 @@ def main():
     plt.errorbar(x, y, xerr=un_x, yerr=un_y, fmt='+')
     plt.ylabel(r'$\Delta{\nu}  (mm^{-1})$')
     plt.xlabel('Magnetic Field (T)')
-    plt.xlim(x[0] * .95, x[-1] * 1.02)
+    plt.xlim(x[1] * .95, x[-1] * 1.02)
     #plt.ylim(0, 1)
     plt.subplot_tool()
     duration = time.time() - start
