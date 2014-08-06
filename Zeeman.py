@@ -563,8 +563,8 @@ def main():
 
         #Place data in to final j array
         if run == 1:
-            final_minus = [[sfm_mean, un_sfm, b_field(amps), uncertainty_b * .01]]
-            final_plus = [[sfp_mean, un_sfp, b_field(amps), uncertainty_b * .01]]
+            final_minus = np.array([[sfm_mean, un_sfm, b_field(amps), uncertainty_b]])
+            final_plus = np.array([[sfp_mean, un_sfp, b_field(amps), uncertainty_b]])
         else:
             final_minus = np.append(final_minus, [[sfm_mean, un_sfm, b_field(amps), uncertainty_b]], axis=0)
             final_plus = np.append(final_plus, [[sfp_mean, un_sfp, b_field(amps), uncertainty_b]], axis=0)
