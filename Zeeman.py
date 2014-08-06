@@ -5,7 +5,8 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage as ski
-import pylab as P
+import math
+import getpass
 import time
 
 from skimage import data, filter, exposure
