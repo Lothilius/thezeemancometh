@@ -260,278 +260,278 @@ def best_fit(data_x, data_y):
     plt.plot(x, ys)
 
 def get_calibration(inputFileDer, file_name):
-        color_of_interest = raw_input("What color is of interest? ")
-        if ('Red' in color_of_interest) or ('red' in color_of_interest):
-            color_of_interest = 0
-        elif ('Green' in color_of_interest) or ('green' in color_of_interest):
-            color_of_interest = 1
-        elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
-            color_of_interest = 2
+    color_of_interest = raw_input("What color is of interest? ")
+    if ('Red' in color_of_interest) or ('red' in color_of_interest):
+        color_of_interest = 0
+    elif ('Green' in color_of_interest) or ('green' in color_of_interest):
+        color_of_interest = 1
+    elif ('Blue' in color_of_interest) or ('blue' in color_of_interest):
+        color_of_interest = 2
 
-        #data = arrayFromFile(inputFileDer+fileNum)
-        org_image = jpg_to_array(inputFileDer, file_name)
+    #data = arrayFromFile(inputFileDer+fileNum)
+    org_image = jpg_to_array(inputFileDer, file_name)
 
-        image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=7)
+    image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=7)
 
-        #Show detected rings using the canny algorithm
-        #plt.subplot(5, 4, 1)
-        plt.figure(1)
-        # plt.subplot(2, 1, 1)
-        amps = file_name.replace('.jpg', '').replace('_', '.')
-        amps = float(amps)
+    #Show detected rings using the canny algorithm
+    #plt.subplot(5, 4, 1)
+    plt.figure(1)
+    # plt.subplot(2, 1, 1)
+    amps = file_name.replace('.jpg', '').replace('_', '.')
+    amps = float(amps)
 
-        plt.title(str(amps) + ' amps')
-        plt.ylabel('Pixel Bin')
-        plt.xlabel('Pixel Bin')
-        plt.imshow(image_proc, origin='lower')
-        plt.gray()
+    plt.title(str(amps) + ' amps')
+    plt.ylabel('Pixel Bin')
+    plt.xlabel('Pixel Bin')
+    plt.imshow(image_proc, origin='lower')
+    plt.gray()
 
-        #Show the stripped down image
-        plt.imshow(image_stripped, origin='lower', alpha=.5)
-        plt.gray()
-
-
-        #Print average of the center in the y axis.
-        avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
-        print('Average y value for center: ' + str(avrg_y))
-        uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
-        print('Uncertainty in y: ' + str(uncertanty_y))
-
-        #Print average of the center in the x axis.
-        avrg_x = np.round(np.mean(center, axis=0)[1], decimals=1)
-        print('Average x value for center: ' + str(avrg_x))
-        uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
-        print('Uncertainty in x: ' + str(uncertanty_x))
+    #Show the stripped down image
+    plt.imshow(image_stripped, origin='lower', alpha=.5)
+    plt.gray()
 
 
+    #Print average of the center in the y axis.
+    avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
+    print('Average y value for center: ' + str(avrg_y))
+    uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
+    print('Uncertainty in y: ' + str(uncertanty_y))
 
-        #y value will give horizontal slice.
-        # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
-        # plotevents(org_image[avrg_y][:, 1] + base_line)
-        l = plt.axhline(y=avrg_y, color='r')
-        # plotevents(image_stripped[avrg_y] + base_line)
-        l = plt.axvline(x=avrg_x, color='r')
-        # plt.margins(0)
-        #plt.show()
-
-        #Use edge array to get peak list
-        edges_left, edges_right= getedge(avrg_x, image_proc[avrg_y])
-        #edges_array = image_proc[avrg_y]
-        peakPrec = uncertanty_x
-        main_peak_list = []
-
-        for i, item in enumerate(edges_right):
-            if i + 1 < len(edges_right):
-                peakL1, value = ternarySearch(image_stripped[avrg_y], item, edges_right[i + 1], peakPrec)
-                main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
-
-        #Remove any peak with less than half the maximum peak intensity
-        new = []
-        for item in main_peak_list:
-            new.append(item[3])
-
-        half_largest_peak = max(new) / 2
-
-        main_peaks = []
-        for i, item in enumerate(main_peak_list):
-            if item[3] > half_largest_peak:
-                main_peaks.append(item)
-
-        main_peak_list = main_peaks
-
-        #Array of edges used to define boundaries for the primary peaks
-        calibration = np.array(main_peak_list)
-
-        #Build and graph main image
-        field_image = np.array([image_stripped[avrg_y]] * 300)
-        field_image_proc = np.array([image_proc[avrg_y]] * 300)
-
-        #Plot Intensity field with plot, peaks, and edges
-        #plt.subplot(5, 4, 1)
-        plt.figure(2, figsize=(5, 1.5))
-        plt.title(str(amps) + ' amps')
-
-        plt.imshow(field_image_proc, origin='lower')
-        #plt.imshow(field_image_proc2, origin='lower')
-        plt.imshow(field_image, origin='lower', alpha=.5)
-        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
-        l = plt.axvline(x=avrg_x, color='r')
-        plt.margins(0)
+    #Print average of the center in the x axis.
+    avrg_x = np.round(np.mean(center, axis=0)[1], decimals=1)
+    print('Average x value for center: ' + str(avrg_x))
+    uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
+    print('Uncertainty in x: ' + str(uncertanty_x))
 
 
-        #Plot intensities
-        plt.figure(3, figsize=(5, 1.5))
-        plt.title(str(amps) + ' amps')
 
-        for each in main_peak_list[:-1]:
-             l = plt.axvline(x=each[0], color='r')
-        plotevents(image_stripped[avrg_y])
-        l = plt.axvline(x=avrg_x, color='r')
-        plt.margins(0)
-        plt.ylabel('Intensity ')
-        plt.xlabel('Pixel Bin')
-        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    #y value will give horizontal slice.
+    # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
+    # plotevents(org_image[avrg_y][:, 1] + base_line)
+    l = plt.axhline(y=avrg_y, color='r')
+    # plotevents(image_stripped[avrg_y] + base_line)
+    l = plt.axvline(x=avrg_x, color='r')
+    # plt.margins(0)
+    #plt.show()
 
-        os.system("afplay woohoo.wav")
+    #Use edge array to get peak list
+    edges_left, edges_right= getedge(avrg_x, image_proc[avrg_y])
+    #edges_array = image_proc[avrg_y]
+    peakPrec = uncertanty_x
+    main_peak_list = []
 
-        plt.show()
+    for i, item in enumerate(edges_right):
+        if i + 1 < len(edges_right):
+            peakL1, value = ternarySearch(image_stripped[avrg_y], item, edges_right[i + 1], peakPrec)
+            main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
 
-        return image_stripped, image_proc, org_image, calibration, color_of_interest, avrg_y, avrg_x
+    #Remove any peak with less than half the maximum peak intensity
+    new = []
+    for item in main_peak_list:
+        new.append(item[3])
+
+    half_largest_peak = max(new) / 2
+
+    main_peaks = []
+    for i, item in enumerate(main_peak_list):
+        if item[3] > half_largest_peak:
+            main_peaks.append(item)
+
+    main_peak_list = main_peaks
+
+    #Array of edges used to define boundaries for the primary peaks
+    calibration = np.array(main_peak_list)
+
+    #Build and graph main image
+    field_image = np.array([image_stripped[avrg_y]] * 300)
+    field_image_proc = np.array([image_proc[avrg_y]] * 300)
+
+    #Plot Intensity field with plot, peaks, and edges
+    #plt.subplot(5, 4, 1)
+    plt.figure(2, figsize=(5, 1.5))
+    plt.title(str(amps) + ' amps')
+
+    plt.imshow(field_image_proc, origin='lower')
+    #plt.imshow(field_image_proc2, origin='lower')
+    plt.imshow(field_image, origin='lower', alpha=.5)
+    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    l = plt.axvline(x=avrg_x, color='r')
+    plt.margins(0)
+
+
+    #Plot intensities
+    plt.figure(3, figsize=(5, 1.5))
+    plt.title(str(amps) + ' amps')
+
+    for each in main_peak_list[:-1]:
+         l = plt.axvline(x=each[0], color='r')
+    plotevents(image_stripped[avrg_y])
+    l = plt.axvline(x=avrg_x, color='r')
+    plt.margins(0)
+    plt.ylabel('Intensity ')
+    plt.xlabel('Pixel Bin')
+    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+
+    os.system("afplay woohoo.wav")
+
+    plt.show()
+
+    return image_stripped, image_proc, org_image, calibration, color_of_interest, avrg_y, avrg_x
 
 def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
-        #Strip file name in to the amps for the file.
-        amps = file_name.replace('.JPG', '').replace('_', '.')
-        amps = float(amps)
+    #Strip file name in to the amps for the file.
+    amps = file_name.replace('.JPG', '').replace('_', '.')
+    amps = float(amps)
 
 
-        #Strip color and get center
-        org_image = jpg_to_array(inputFileDer, file_name)
+    #Strip color and get center
+    org_image = jpg_to_array(inputFileDer, file_name)
 
-        image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=4)
+    image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=4)
 
-        #Show detected rings using the canny algorithm
-        placement = run + 8
+    #Show detected rings using the canny algorithm
+    placement = run + 8
 
-        #plt.subplot(5, 4, placement)
-        plt.figure(run + 5)
-        #plt.subplot(2, 1, 1)
-        plt.title(str(amps) + 'amps')
-        plt.imshow(image_proc, origin='lower')
-        plt.gray()
+    #plt.subplot(5, 4, placement)
+    plt.figure(run + 5)
+    #plt.subplot(2, 1, 1)
+    plt.title(str(amps) + 'amps')
+    plt.imshow(image_proc, origin='lower')
+    plt.gray()
 
-        #Show the stripped down image
-        plt.imshow(image_stripped, origin='lower', alpha=.5)
-        plt.gray()
-
-
-        #Print average of the center in the y axis.
-        avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
-        print('Average y value for center: ' + str(avrg_y))
-        uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
-        print('Uncertainty in y: ' + str(uncertanty_y))
-
-        #Print average of the center in the x axis.
-        avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
-        print('Average x value for center: ' + str(avrg_x))
-        uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
-        print('Uncertainty in x: ' + str(uncertanty_x))
+    #Show the stripped down image
+    plt.imshow(image_stripped, origin='lower', alpha=.5)
+    plt.gray()
 
 
+    #Print average of the center in the y axis.
+    avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
+    print('Average y value for center: ' + str(avrg_y))
+    uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
+    print('Uncertainty in y: ' + str(uncertanty_y))
 
-        #y value will give horizontal slice.
-        # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
-        # plotevents(org_image[avrg_y][:, 1] + base_line)
-        l = plt.axhline(y=avrg_y, color='r')
-        # plotevents(image_stripped[avrg_y] + base_line)
-        l = plt.axvline(x=avrg_x, color='r')
-        plt.margins(0)
-        plt.ylabel('Pixel Bin')
-        plt.xlabel('Pixel Bin')
-        os.system("afplay woohoo.wav")
-        #plt.show()
+    #Print average of the center in the x axis.
+    avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
+    print('Average x value for center: ' + str(avrg_x))
+    uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
+    print('Uncertainty in x: ' + str(uncertanty_x))
 
 
-        #Get first right peak
-        placement = run + 12
-        plt.figure(run + 6, figsize=(5, 1.5))
 
-        #plt.subplot(5, 4, placement)
-        #plt.subplot(2, 1, 2)
-        plt.title(str(amps) + ' amps')
+    #y value will give horizontal slice.
+    # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
+    # plotevents(org_image[avrg_y][:, 1] + base_line)
+    l = plt.axhline(y=avrg_y, color='r')
+    # plotevents(image_stripped[avrg_y] + base_line)
+    l = plt.axvline(x=avrg_x, color='r')
+    plt.margins(0)
+    plt.ylabel('Pixel Bin')
+    plt.xlabel('Pixel Bin')
+    os.system("afplay woohoo.wav")
+    #plt.show()
 
-        #Find and Graph lines of main peaks for non calibration files.
-        edges_array = calibration
-        peakPrec = uncertanty_x
-        main_peak_list = []
-        for i, item in enumerate(edges_array):
-            if i < len(edges_array):
-                peakL1, value = ternarySearch(image_stripped[avrg_y], item[1], item[2], peakPrec)
-                main_peak_list.append([peakL1, item[1], item[2], value])
 
-        main_peak_list = np.array(main_peak_list)
+    #Get first right peak
+    placement = run + 12
+    plt.figure(run + 6, figsize=(5, 1.5))
 
-        #Find and Graph lines for 1st secondary peaks
-        jminus_peak_list = []
-        for i, edge in enumerate(main_peak_list):
-            if i + 1 < len(main_peak_list):
-                j = i + 1
-                limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
-                peakL1, value = ternarySearch(image_stripped[avrg_y], edge[1] + limit, edge[1], peakPrec)
-                jminus_peak_list.append([peakL1, i, edge[1] + limit, edge[1], value])
+    #plt.subplot(5, 4, placement)
+    #plt.subplot(2, 1, 2)
+    plt.title(str(amps) + ' amps')
 
-        jminus_peak_list = np.array(jminus_peak_list)
+    #Find and Graph lines of main peaks for non calibration files.
+    edges_array = calibration
+    peakPrec = uncertanty_x
+    main_peak_list = []
+    for i, item in enumerate(edges_array):
+        if i < len(edges_array):
+            peakL1, value = ternarySearch(image_stripped[avrg_y], item[1], item[2], peakPrec)
+            main_peak_list.append([peakL1, item[1], item[2], value])
 
-        #Find and Graph lines for 2nd secondary peaks
-        jplus_peak_list = []
-        for i, edge in enumerate(main_peak_list):
-            if i + 1 < len(main_peak_list):
-                j = i + 1
-                limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
-                peakL1, value = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] - limit, peakPrec)
-                jplus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
+    main_peak_list = np.array(main_peak_list)
 
-        jplus_peak_list = np.array(jplus_peak_list)
+    #Find and Graph lines for 1st secondary peaks
+    jminus_peak_list = []
+    for i, edge in enumerate(main_peak_list):
+        if i + 1 < len(main_peak_list):
+            j = i + 1
+            limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
+            peakL1, value = ternarySearch(image_stripped[avrg_y], edge[1] + limit, edge[1], peakPrec)
+            jminus_peak_list.append([peakL1, i, edge[1] + limit, edge[1], value])
 
-        sfreq_minus = []
-        sfreq_plus = []
-        global measured_data
-        for i, each in enumerate(main_peak_list):
-            if i < len(main_peak_list) - 1:
-                measured_data.append([amps, main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0], jplus_peak_list[i][0]])
+    jminus_peak_list = np.array(jminus_peak_list)
 
-                sfreq_minus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0]), 2))
-                sfreq_plus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jplus_peak_list[i][0]), 2))
+    #Find and Graph lines for 2nd secondary peaks
+    jplus_peak_list = []
+    for i, edge in enumerate(main_peak_list):
+        if i + 1 < len(main_peak_list):
+            j = i + 1
+            limit = (main_peak_list[:, 0][i] - main_peak_list[:, 0][j]) / 2
+            peakL1, value = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] - limit, peakPrec)
+            jplus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
 
-        #build spacial frequency array of values using all peaks
-        sfm_mean = np.round(np.mean(sfreq_minus), decimals=2)
-        sfp_mean = np.round(np.mean(sfreq_plus), decimals=2)
+    jplus_peak_list = np.array(jplus_peak_list)
 
-        #Create uncertainty based on standard deviation
-        un_sfm = np.round((np.std(sfreq_minus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
-        un_sfp = np.round((np.std(sfreq_plus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
+    sfreq_minus = []
+    sfreq_plus = []
+    global measured_data
+    for i, each in enumerate(main_peak_list):
+        if i < len(main_peak_list) - 1:
+            measured_data.append([amps, main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0], jplus_peak_list[i][0]])
 
-        print(np.round(sfreq_minus, 2))
-        print(np.round(sfreq_plus, 2))
+            sfreq_minus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0]), 2))
+            sfreq_plus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jplus_peak_list[i][0]), 2))
 
-        #Build and graph field image
-        field_image = np.array([image_stripped[avrg_y]] * 300)
-        field_image_proc = np.array([image_proc[avrg_y]] * 300)
-        #field_image_proc2 = np.array([image_proc[avrg_y]] * 300)
+    #build spacial frequency array of values using all peaks
+    sfm_mean = np.round(np.mean(sfreq_minus), decimals=2)
+    sfp_mean = np.round(np.mean(sfreq_plus), decimals=2)
 
-        plt.imshow(field_image_proc, origin='lower')
-        #plt.imshow(field_image_proc2, origin='lower')
-        plt.imshow(field_image, origin='lower', alpha=.5)
-        l = plt.axvline(x=avrg_x, color='r')
+    #Create uncertainty based on standard deviation
+    un_sfm = np.round((np.std(sfreq_minus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
+    un_sfp = np.round((np.std(sfreq_plus) / math.sqrt(len(sfreq_minus)) * 2), decimals=2)
 
-        plt.xlabel('Pixel Bin')
-        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    print(np.round(sfreq_minus, 2))
+    print(np.round(sfreq_plus, 2))
 
-        plt.margins(0)
+    #Build and graph field image
+    field_image = np.array([image_stripped[avrg_y]] * 300)
+    field_image_proc = np.array([image_proc[avrg_y]] * 300)
+    #field_image_proc2 = np.array([image_proc[avrg_y]] * 300)
 
-        plt.figure(run + 7, figsize=(5, 1.5))
+    plt.imshow(field_image_proc, origin='lower')
+    #plt.imshow(field_image_proc2, origin='lower')
+    plt.imshow(field_image, origin='lower', alpha=.5)
+    l = plt.axvline(x=avrg_x, color='r')
 
-        plt.title(str(amps) + ' amps')
-        l = plt.axvline(x=avrg_x, color='r')
+    plt.xlabel('Pixel Bin')
+    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
 
-        for each in main_peak_list[:-1]:
-            l = plt.axvline(x=each[0], color='r')
-        for each in jminus_peak_list:
-            l = plt.axvline(x=each[0], color='b')
-        for each in jplus_peak_list:
-            l = plt.axvline(x=each[0], color='g')
+    plt.margins(0)
 
-        #plotevents(org_image[avrg_y][:, 1])
-        plotevents(image_stripped[avrg_y])
-        l = plt.axvline(x=avrg_x, color='r')
-        plt.ylabel('Intensity')
-        plt.xlabel('Pixel Bin')
-        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    plt.figure(run + 7, figsize=(5, 1.5))
 
-        plt.margins(0)
+    plt.title(str(amps) + ' amps')
+    l = plt.axvline(x=avrg_x, color='r')
 
-        plt.show()
+    for each in main_peak_list[:-1]:
+        l = plt.axvline(x=each[0], color='r')
+    for each in jminus_peak_list:
+        l = plt.axvline(x=each[0], color='b')
+    for each in jplus_peak_list:
+        l = plt.axvline(x=each[0], color='g')
 
-        return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
+    #plotevents(org_image[avrg_y][:, 1])
+    plotevents(image_stripped[avrg_y])
+    l = plt.axvline(x=avrg_x, color='r')
+    plt.ylabel('Intensity')
+    plt.xlabel('Pixel Bin')
+    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+
+    plt.margins(0)
+
+    plt.show()
+
+    return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
 
 
 def main():
