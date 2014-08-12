@@ -294,13 +294,13 @@ def get_calibration(inputFileDer, file_name):
         #Print average of the center in the y axis.
         avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
         print('Average y value for center: ' + str(avrg_y))
-        uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
+        uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
         print('Uncertainty in y: ' + str(uncertanty_y))
 
         #Print average of the center in the x axis.
-        avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
+        avrg_x = np.round(np.mean(center, axis=0)[1], decimals=1)
         print('Average x value for center: ' + str(avrg_x))
-        uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
+        uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
         print('Uncertainty in x: ' + str(uncertanty_x))
 
 
@@ -402,13 +402,13 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         #Print average of the center in the y axis.
         avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
         print('Average y value for center: ' + str(avrg_y))
-        uncertanty_y = np.round(np.std(center, axis=0)[0], decimals=1)
+        uncertanty_y = np.round(np.std(center, axis=0)[0] / (math.sqrt(len(center)) * 2), decimals=1)
         print('Uncertainty in y: ' + str(uncertanty_y))
 
         #Print average of the center in the x axis.
         avrg_x = np.round(np.mean(center, axis=0)[1], decimals=0)
         print('Average x value for center: ' + str(avrg_x))
-        uncertanty_x = np.round(np.std(center, axis=0)[1], decimals=1)
+        uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
         print('Uncertainty in x: ' + str(uncertanty_x))
 
 
