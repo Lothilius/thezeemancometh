@@ -513,7 +513,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         plt.title(str(amps) + ' amps')
         l = plt.axvline(x=avrg_x, color='r')
 
-        for each in main_peak_list:
+        for each in main_peak_list[:-1]:
             l = plt.axvline(x=each[0], color='r')
         for each in jminus_peak_list:
             l = plt.axvline(x=each[0], color='b')
