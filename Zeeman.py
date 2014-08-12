@@ -444,7 +444,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         peakPrec = uncertanty_x
         main_peak_list = []
         for i, item in enumerate(edges_array):
-            if i + 1 < len(edges_array):
+            if i < len(edges_array):
                 peakL1, value = ternarySearch(image_stripped[avrg_y], item[1], item[2], peakPrec)
                 main_peak_list.append([peakL1, item[1], item[2], value])
 
