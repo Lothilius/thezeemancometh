@@ -529,7 +529,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         plt.margins(0)
 
-        #plt.show()
+        plt.show()
 
         return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
 
