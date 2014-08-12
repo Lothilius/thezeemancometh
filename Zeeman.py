@@ -503,9 +503,8 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         plt.imshow(field_image, origin='lower', alpha=.5)
         l = plt.axvline(x=avrg_x, color='r')
 
-        plt.ylabel('Intensity')
         plt.xlabel('Pixel Bin')
-        plt.xlim(avrg_x * .95, main_peak_list[-1][0] * 1.10)
+        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
 
         plt.margins(0)
 
@@ -526,7 +525,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         l = plt.axvline(x=avrg_x, color='r')
         plt.ylabel('Intensity')
         plt.xlabel('Pixel Bin')
-        plt.xlim(avrg_x * .95, main_peak_list[-1][0] * 1.10)
+        plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
 
         plt.margins(0)
 
