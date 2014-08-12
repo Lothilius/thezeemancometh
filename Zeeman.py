@@ -393,6 +393,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         placement = run + 8
 
         #plt.subplot(5, 4, placement)
+        plt.figure(run + 5)
         #plt.subplot(2, 1, 1)
         plt.title(str(amps) + 'amps')
         plt.imshow(image_proc, origin='lower')
@@ -432,6 +433,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         #Get first right peak
         placement = run + 12
+        plt.figure(run + 6, figsize=(5, 1.5))
 
         #plt.subplot(5, 4, placement)
         #plt.subplot(2, 1, 2)
@@ -507,6 +509,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         plt.margins(0)
 
+        plt.figure(run + 7, figsize=(5, 1.5))
 
         plt.title(str(amps) + ' amps')
         l = plt.axvline(x=avrg_x, color='r')
