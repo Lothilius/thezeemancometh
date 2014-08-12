@@ -230,6 +230,7 @@ def mag_field():
 
     coefficients = np.polyfit(x, y, 1)
     polynomial = np.poly1d(coefficients)
+    print(polynomial)
     ys = polynomial(x)
 
     #plt.subplot(5, 4, 9)
