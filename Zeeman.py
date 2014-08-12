@@ -241,7 +241,7 @@ def mag_field():
     plt.ylabel('Measured Magnetic Field (T)')
     plt.xlabel('Applied Current (amps)')
     plt.xlim(x[0] * .95, x[-1] * 1.02)
-    plt.show()
+    #plt.show()
 
     return polynomial
 
