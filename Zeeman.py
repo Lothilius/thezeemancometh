@@ -277,9 +277,10 @@ def get_calibration(inputFileDer, file_name):
         #plt.subplot(5, 4, 1)
         plt.figure(1)
         # plt.subplot(2, 1, 1)
-        amps = 0.0
-        amps = str(amps) + ' amps'
-        plt.title(amps)
+        amps = file_name.replace('.jpg', '').replace('_', '.')
+        amps = float(amps)
+
+        plt.title(str(amps) + ' amps')
         plt.ylabel('Pixel Bin')
         plt.xlabel('Pixel Bin')
         plt.imshow(image_proc, origin='lower')
