@@ -123,7 +123,7 @@ def get_center(edges, image_rgb1):
     #image = ski.img_as_ubyte(edges[977:2277, 1650:3150])
     image = edges
 
-    hough_radii = np.arange(400, 565, 5)
+    hough_radii = np.arange(350, 425, 5)
     hough_res = hough_circle(edges, hough_radii)
 
     centers = []
