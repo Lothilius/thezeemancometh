@@ -349,6 +349,8 @@ def get_calibration(inputFileDer, file_name):
         #Plot Intensity field with plot, peaks, and edges
         #plt.subplot(5, 4, 1)
         plt.figure(2, figsize=(5, 1.5))
+        plt.title(str(amps) + ' amps')
+
         plt.imshow(field_image_proc, origin='lower')
         #plt.imshow(field_image_proc2, origin='lower')
         plt.imshow(field_image, origin='lower', alpha=.5)
@@ -359,7 +361,9 @@ def get_calibration(inputFileDer, file_name):
 
         #Plot intensities
         plt.figure(3, figsize=(5, 1.5))
-        for each in main_peak_list:
+        plt.title(str(amps) + ' amps')
+
+        for each in main_peak_list[:-1]:
              l = plt.axvline(x=each[0], color='r')
         plotevents(image_stripped[avrg_y])
         l = plt.axvline(x=avrg_x, color='r')
@@ -431,7 +435,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
 
         #plt.subplot(5, 4, placement)
         #plt.subplot(2, 1, 2)
-        plt.title(amps)
+        plt.title(str(amps) + ' amps')
 
         #Find and Graph lines of main peaks for non calibration files.
         edges_array = calibration
@@ -504,6 +508,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
         plt.margins(0)
 
 
+        plt.title(str(amps) + ' amps')
         l = plt.axvline(x=avrg_x, color='r')
 
         for each in main_peak_list:
