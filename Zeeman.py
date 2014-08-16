@@ -320,7 +320,7 @@ def get_calibration(inputFileDer, file_name):
     #plt.show()
 
     #Use edge array to get peak list
-    edges_left, edges_right= getedge(avrg_x, image_proc[avrg_y])
+    edges_left, edges_right = getedge(avrg_x, image_proc[avrg_y])
     #edges_array = image_proc[avrg_y]
     peakPrec = uncertanty_x
     main_peak_list = []
