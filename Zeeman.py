@@ -387,7 +387,7 @@ def get_calibration(inputFileDer, file_name):
     plt.imshow(field_image_proc, origin='lower')
     #plt.imshow(field_image_proc2, origin='lower')
     plt.imshow(field_image, origin='lower', alpha=.5)
-    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    plt.xlim(avrg_x * .98, right_main_peak_list[-1][0] * 1.02)
     l = plt.axvline(x=avrg_x, color='r')
     plt.margins(0)
 
@@ -405,7 +405,7 @@ def get_calibration(inputFileDer, file_name):
     plt.margins(0)
     plt.ylabel('Intensity ')
     plt.xlabel('Pixel Bin')
-    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    #plt.xlim(avrg_x * .98, right_main_peak_list[-1][0] * 1.02)
 
     os.system("afplay woohoo.wav")
 
@@ -610,7 +610,7 @@ def get_sf(right_calibration, left_calibration, inputFileDer, file_name, color_o
     l = plt.axvline(x=avrg_x, color='r')
     plt.ylabel('Intensity')
     plt.xlabel('Pixel Bin')
-    plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
+    #plt.xlim(avrg_x * .98, main_peak_list[-1][0] * 1.02)
 
     plt.margins(0)
 
