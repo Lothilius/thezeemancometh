@@ -264,6 +264,63 @@ def best_fit(data_x, data_y):
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
 
+#Create the calibration arrays for the horizontal and vertical cross sections.
+def create_calibration_pair(image_stripped, edges_left, edges_right, avrg_center, uncertanty_center):
+    peakPrec = uncertanty_center
+    right_main_peak_list = []
+
+    for i, item in enumerate(edges_right):
+        if i + 1 < len(edges_right):
+            peakL1, value = ternarySearch(image_stripped[avrg_center], item, edges_right[i + 1], peakPrec)
+            right_main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
+
+    #Remove any peak with less than half the maximum peak intensity
+    new = []
+    for item in right_main_peak_list:
+        new.append(item[3])
+
+    half_largest_peak = max(new) / 2
+
+    main_peaks = []
+    for i, item in enumerate(right_main_peak_list):
+        if item[3] > half_largest_peak:
+            main_peaks.append(item)
+
+    right_main_peak_list = main_peaks
+
+    #Array of edges used to define boundaries for the primary peaks
+    right_calibration = np.array(right_main_peak_list)
+
+
+# Find left Edges
+    left_main_peak_list = []
+    edges_left = edges_left[::-1]
+    for i, item in enumerate(edges_left):
+        if i + 1 < len(edges_right):
+            #print(edges_left[i + 1], item)
+            peakL2, value = ternarySearch(image_stripped[avrg_center], edges_left[i + 1], item, peakPrec)
+            left_main_peak_list.append([peakL2, edges_left[i + 1], item, round(value)])
+
+    #Remove any peak with less than half the maximum peak intensity
+    new = []
+    for item in left_main_peak_list:
+        new.append(item[3])
+
+    half_largest_peak = max(new) / 2
+
+    main_peaks = []
+    for i, item in enumerate(left_main_peak_list):
+        if item[3] > half_largest_peak:
+            main_peaks.append(item)
+
+    left_main_peak_list = main_peaks
+
+    #Array of edges used to define boundaries for the primary peaks
+    left_calibration = np.array(left_main_peak_list)
+
+    return left_calibration, right_calibration, left_main_peak_list, right_main_peak_list,
+
+
 def get_calibration(inputFileDer, file_name):
     color_of_interest = raw_input("What color is of interest? ")
     if ('Red' in color_of_interest) or ('red' in color_of_interest):
@@ -319,60 +376,17 @@ def get_calibration(inputFileDer, file_name):
     # plt.margins(0)
     #plt.show()
 
-    #Use edge array to get peak list
+
+
+    #Use edge array to get peak lists for horizontal and vertical cross sections
     edges_left, edges_right = getedge(avrg_x, image_proc[avrg_y])
-    #edges_array = image_proc[avrg_y]
-    peakPrec = uncertanty_x
-    right_main_peak_list = []
+    edges_botton, edges_top = getedge(avrg_y, image_proc[::, avrg_x])
 
-    for i, item in enumerate(edges_right):
-        if i + 1 < len(edges_right):
-            peakL1, value = ternarySearch(image_stripped[avrg_y], item, edges_right[i + 1], peakPrec)
-            right_main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
+    left_calibration, right_calibration, left_main_peak_list, right_main_peak_list = \
+        create_calibration_pair(image_stripped, edges_left, edges_right, avrg_y, uncertanty_x)
+    bottom_calibration, top_calibration, bottom_main_peak_list, top_main_peak_list = \
+        create_calibration_pair(image_stripped, edges_botton, edges_top, avrg_x, uncertanty_y)
 
-    #Remove any peak with less than half the maximum peak intensity
-    new = []
-    for item in right_main_peak_list:
-        new.append(item[3])
-
-    half_largest_peak = max(new) / 2
-
-    main_peaks = []
-    for i, item in enumerate(right_main_peak_list):
-        if item[3] > half_largest_peak:
-            main_peaks.append(item)
-
-    right_main_peak_list = main_peaks
-
-    #Array of edges used to define boundaries for the primary peaks
-    right_calibration = np.array(right_main_peak_list)
-
-
-# Find left Edges
-    left_main_peak_list = []
-    edges_left = edges_left[::-1]
-    for i, item in enumerate(edges_left):
-        if i + 1 < len(edges_right):
-            #print(edges_left[i + 1], item)
-            peakL2, value = ternarySearch(image_stripped[avrg_y], edges_left[i + 1], item, peakPrec)
-            left_main_peak_list.append([peakL2, edges_left[i + 1], item, round(value)])
-
-    #Remove any peak with less than half the maximum peak intensity
-    new = []
-    for item in left_main_peak_list:
-        new.append(item[3])
-
-    half_largest_peak = max(new) / 2
-
-    main_peaks = []
-    for i, item in enumerate(left_main_peak_list):
-        if item[3] > half_largest_peak:
-            main_peaks.append(item)
-
-    left_main_peak_list = main_peaks
-
-    #Array of edges used to define boundaries for the primary peaks
-    left_calibration = np.array(left_main_peak_list)
 
 
     #Build and graph main image
@@ -411,7 +425,8 @@ def get_calibration(inputFileDer, file_name):
 
     plt.show()
 
-    return image_stripped, image_proc, org_image, right_calibration, left_calibration, color_of_interest, avrg_y, avrg_x
+    return image_stripped, image_proc, org_image, left_calibration, right_calibration, \
+           bottom_calibration, top_calibration, color_of_interest, avrg_y, avrg_x
 
 def get_sf(right_calibration, left_calibration, inputFileDer, file_name, color_of_interest, run):
     #Strip file name in to the amps for the file.
@@ -660,7 +675,9 @@ def main():
     else:
         stupid_hidden_file = 1
 
-    image_stripped, image_proc, org_image, right_calibration, left_calibration, color_of_interest, avrg_y, avrg_x = get_calibration(inputFileDer, file_name)
+    image_stripped, image_proc, org_image, left_calibration, right_calibration, \
+           bottom_calibration, top_calibration, color_of_interest, avrg_y, avrg_x \
+        = get_calibration(inputFileDer, file_name)
 
     for item in image_list[stupid_hidden_file:]:
         sfm_mean, un_sfm, sfp_mean, un_sfp, amps = get_sf(right_calibration, left_calibration, inputFileDer, item, color_of_interest, run)
