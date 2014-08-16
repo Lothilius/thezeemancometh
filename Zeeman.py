@@ -618,6 +618,17 @@ def get_sf(right_calibration, left_calibration, inputFileDer, file_name, color_o
 
     return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
 
+#Calculate the Standard diviation of the slope and y intercept of a fit line.
+def calc_fit_uncertanty(list_x, residuals, number_of_points):
+    xi_squared = []
+    for item in list_x:
+        xi_squared.append(math.pow(item, 2))
+
+    sd_of_y = math.sqrt(residuals / (number_of_points - 2))
+    sd_of_slope = sd_of_y * math.sqrt(number_of_points / ((number_of_points * sum(xi_squared)) - math.pow(sum(list_x), 2)))
+    sd_of_y_intercept = sd_of_y * math.sqrt(sum(xi_squared) / ((number_of_points * sum(xi_squared)) - math.pow(sum(list_x), 2)))
+
+    return sd_of_slope, sd_of_y_intercept
 
 def main():
     #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
