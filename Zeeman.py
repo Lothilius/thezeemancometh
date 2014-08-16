@@ -17,6 +17,8 @@ from skimage.draw import circle_perimeter
 
 measured_data = []
 start = time.time()
+np.set_printoptions(suppress=True)
+
 
 #Pull data from CSV file
 def arrayFromFile(filename):
@@ -579,7 +581,6 @@ def main():
 
         final_data = np.append(final_data, [[sfm_mean, un_sfm, b_field(amps), uncertainty_b]], axis=0)
         final_data = np.append(final_data, [[sfp_mean, un_sfp, b_field(amps), uncertainty_b]], axis=0)
-        np.set_printoptions(suppress=True)
         print(np.round(final_data, 2))
 
         os.system("afplay woohoo.wav")
