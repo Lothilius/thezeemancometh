@@ -323,35 +323,63 @@ def get_calibration(inputFileDer, file_name):
     edges_left, edges_right = getedge(avrg_x, image_proc[avrg_y])
     #edges_array = image_proc[avrg_y]
     peakPrec = uncertanty_x
-    main_peak_list = []
+    right_main_peak_list = []
 
     for i, item in enumerate(edges_right):
         if i + 1 < len(edges_right):
             peakL1, value = ternarySearch(image_stripped[avrg_y], item, edges_right[i + 1], peakPrec)
-            main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
+            right_main_peak_list.append([peakL1, item, edges_right[i + 1], round(value)])
 
     #Remove any peak with less than half the maximum peak intensity
     new = []
-    for item in main_peak_list:
+    for item in right_main_peak_list:
         new.append(item[3])
 
     half_largest_peak = max(new) / 2
 
     main_peaks = []
-    for i, item in enumerate(main_peak_list):
+    for i, item in enumerate(right_main_peak_list):
         if item[3] > half_largest_peak:
             main_peaks.append(item)
 
-    main_peak_list = main_peaks
+    right_main_peak_list = main_peaks
 
     #Array of edges used to define boundaries for the primary peaks
-    calibration = np.array(main_peak_list)
+    right_calibration = np.array(right_main_peak_list)
+
+
+# Find left Edges
+    left_main_peak_list = []
+    edges_left = edges_left[::-1]
+    for i, item in enumerate(edges_left):
+        if i + 1 < len(edges_right):
+            #print(edges_left[i + 1], item)
+            peakL2, value = ternarySearch(image_stripped[avrg_y], edges_left[i + 1], item, peakPrec)
+            left_main_peak_list.append([peakL2, edges_left[i + 1], item, round(value)])
+
+    #Remove any peak with less than half the maximum peak intensity
+    new = []
+    for item in left_main_peak_list:
+        new.append(item[3])
+
+    half_largest_peak = max(new) / 2
+
+    main_peaks = []
+    for i, item in enumerate(left_main_peak_list):
+        if item[3] > half_largest_peak:
+            main_peaks.append(item)
+
+    left_main_peak_list = main_peaks
+
+    #Array of edges used to define boundaries for the primary peaks
+    left_calibration = np.array(left_main_peak_list)
+
 
     #Build and graph main image
     field_image = np.array([image_stripped[avrg_y]] * 300)
     field_image_proc = np.array([image_proc[avrg_y]] * 300)
 
-    #Plot Intensity field with plot, peaks, and edges
+    #Plot Intensity field with edges
     #plt.subplot(5, 4, 1)
     plt.figure(2, figsize=(5, 1.5))
     plt.title(str(amps) + ' amps')
@@ -368,7 +396,9 @@ def get_calibration(inputFileDer, file_name):
     plt.figure(3, figsize=(5, 1.5))
     plt.title(str(amps) + ' amps')
 
-    for each in main_peak_list[:-1]:
+    for each in right_main_peak_list[:-1]:
+         l = plt.axvline(x=each[0], color='r')
+    for each in left_main_peak_list[:-1]:
          l = plt.axvline(x=each[0], color='r')
     plotevents(image_stripped[avrg_y])
     l = plt.axvline(x=avrg_x, color='r')
@@ -381,9 +411,9 @@ def get_calibration(inputFileDer, file_name):
 
     plt.show()
 
-    return image_stripped, image_proc, org_image, calibration, color_of_interest, avrg_y, avrg_x
+    return image_stripped, image_proc, org_image, right_calibration, left_calibration, color_of_interest, avrg_y, avrg_x
 
-def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
+def get_sf(right_calibration, left_calibration, inputFileDer, file_name, color_of_interest, run):
     #Strip file name in to the amps for the file.
     amps = file_name.replace('.JPG', '').replace('_', '.')
     amps = float(amps)
@@ -445,7 +475,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
     plt.title(str(amps) + ' amps')
 
     #Find and Graph lines of main peaks for non calibration files.
-    edges_array = calibration
+    edges_array = right_calibration
     peakPrec = uncertanty_x
     main_peak_list = []
     for i, item in enumerate(edges_array):
@@ -453,6 +483,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
             peakL1, value = ternarySearch(image_stripped[avrg_y], item[1], item[2], peakPrec)
             main_peak_list.append([peakL1, item[1], item[2], value])
 
+    end_of_right = len(main_peak_list)
     main_peak_list = np.array(main_peak_list)
 
     #Find and Graph lines for 1st secondary peaks
@@ -464,7 +495,7 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
             peakL1, value = ternarySearch(image_stripped[avrg_y], edge[1] + limit, edge[1], peakPrec)
             jminus_peak_list.append([peakL1, i, edge[1] + limit, edge[1], value])
 
-    jminus_peak_list = np.array(jminus_peak_list)
+    #jminus_peak_list = np.array(jminus_peak_list)
 
     #Find and Graph lines for 2nd secondary peaks
     jplus_peak_list = []
@@ -475,17 +506,66 @@ def get_sf(calibration, inputFileDer, file_name, color_of_interest, run):
             peakL1, value = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] - limit, peakPrec)
             jplus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
 
+    #jplus_peak_list = np.array(jplus_peak_list)
+
+##Left Side
+#Find and Graph lines of main peaks for non calibration files.
+    edges_array = left_calibration
+    peakPrec = uncertanty_x
+    left_main_peak_list = []
+    for i, item in enumerate(edges_array):
+        if i < len(edges_array):
+            peakL1, value = ternarySearch(image_stripped[avrg_y], item[1], item[2], peakPrec)
+            left_main_peak_list.append([peakL1, item[1], item[2], value])
+
+    left_main_peak_list = np.array(left_main_peak_list)
+    main_peak_list = np.append(main_peak_list, left_main_peak_list, axis=0)
+
+
+##Left Side
+#Find and Graph lines for 1st secondary peaks
+    for i, edge in enumerate(left_main_peak_list):
+        if i + 1 < len(left_main_peak_list):
+            j = i + 1
+            limit = (left_main_peak_list[:, 0][i] - left_main_peak_list[:, 0][j]) / 2
+            peakL1, value = ternarySearch(image_stripped[avrg_y], edge[2], edge[2] + limit, peakPrec)
+            jminus_peak_list.append([peakL1, i, edge[2], edge[2] - limit, value])
+
+
+    jminus_peak_list = np.array(jminus_peak_list)
+
+##Left Side
+#Find and Graph lines for 2nd secondary peaks
+    for i, edge in enumerate(left_main_peak_list):
+        if i + 1 < len(left_main_peak_list):
+            j = i + 1
+            limit = (left_main_peak_list[:, 0][i] - left_main_peak_list[:, 0][j]) / 2
+            peakL1, value = ternarySearch(image_stripped[avrg_y], edge[1] - limit, edge[1], peakPrec)
+            jplus_peak_list.append([peakL1, i, edge[1] + limit, edge[1], value])
+
     jplus_peak_list = np.array(jplus_peak_list)
 
     sfreq_minus = []
     sfreq_plus = []
     global measured_data
     for i, each in enumerate(main_peak_list):
-        if i < len(main_peak_list) - 1:
-            measured_data.append([amps, main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0], jplus_peak_list[i][0]])
+        if i + 2 < len(main_peak_list):
+            if i == end_of_right - 1:
+                pass
+            elif each[0] > avrg_x:
+                measured_data.append([amps, main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0],
+                                      jplus_peak_list[i][0]])
 
-            sfreq_minus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0]), 2))
-            sfreq_plus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jplus_peak_list[i][0]), 2))
+                sfreq_minus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jminus_peak_list[i][0]), 2))
+                sfreq_plus.append(np.round(space_freq(main_peak_list[i][0], main_peak_list[i + 1][0], jplus_peak_list[i][0]), 2))
+            else:
+                measured_data.append([amps, avrg_x - main_peak_list[i][0], avrg_x - main_peak_list[i + 1][0],
+                                      avrg_x - jminus_peak_list[i][0], avrg_x - jplus_peak_list[i][0]])
+
+                sfreq_minus.append(np.round(space_freq(avrg_x - main_peak_list[i][0], avrg_x - main_peak_list[i + 1][0],
+                                                       avrg_x - jminus_peak_list[i - 1][0]), 2))
+                sfreq_plus.append(np.round(space_freq(avrg_x - main_peak_list[i][0], avrg_x - main_peak_list[i + 1][0],
+                                                      avrg_x - jplus_peak_list[i - 1][0]), 2))
 
     #build spacial frequency array of values using all peaks
     sfm_mean = np.round(np.mean(sfreq_minus), decimals=2)
@@ -569,10 +649,10 @@ def main():
     else:
         stupid_hidden_file = 1
 
-    image_stripped, image_proc, org_image, calibration, color_of_interest, avrg_y, avrg_x = get_calibration(inputFileDer, file_name)
+    image_stripped, image_proc, org_image, right_calibration, left_calibration, color_of_interest, avrg_y, avrg_x = get_calibration(inputFileDer, file_name)
 
     for item in image_list[stupid_hidden_file:]:
-        sfm_mean, un_sfm, sfp_mean, un_sfp, amps = get_sf(calibration, inputFileDer, item, color_of_interest, run)
+        sfm_mean, un_sfm, sfp_mean, un_sfp, amps = get_sf(right_calibration, left_calibration, inputFileDer, item, color_of_interest, run)
 
         #Place data in to final j array
         if run == 1:
