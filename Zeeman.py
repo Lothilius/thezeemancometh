@@ -70,7 +70,7 @@ def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
 #Ternary Search
 def ternarySearch(f, left, right, absolutePrecision):
     #left and right are the current bounds; the maximum is between them
-    if (right - left) < absolutePrecision:
+    if (right - left) <= absolutePrecision or (right - left) <= 2:
         return round((left + right) / 2), f[(left + right) / 2]
 
     leftThird = (2 * left + right) / 3
