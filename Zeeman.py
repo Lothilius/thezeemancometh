@@ -252,12 +252,15 @@ def best_fit(data_x, data_y):
     x = data_x
     y = data_y
 
-    coefficients = np.polyfit(x, y, 1)
+    coefficients, res, _, _, _ = np.polyfit(x, y, 1, full=True)
     polynomial = np.poly1d(coefficients)
     ys = polynomial(x)
     # print coefficients
     print polynomial
 
+    sd_of_slope, sd_of_y_intercept = calc_fit_uncertanty(data_x, res[0], len(data_x))
+
+    print sd_of_slope * 2 , sd_of_y_intercept * 2
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
 
