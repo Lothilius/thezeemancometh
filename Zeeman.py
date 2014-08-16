@@ -260,7 +260,7 @@ def best_fit(data_x, data_y):
 
     sd_of_slope, sd_of_y_intercept = calc_fit_uncertanty(data_x, res[0], len(data_x))
 
-    print sd_of_slope * 2 , sd_of_y_intercept * 2
+    print round(sd_of_slope * 2, 2), round(sd_of_y_intercept * 2, 2)
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
 
