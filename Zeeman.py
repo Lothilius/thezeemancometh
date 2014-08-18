@@ -248,11 +248,11 @@ def mag_field():
     return polynomial
 
 #Find and plot best fit line
-def best_fit(data_x, data_y):
+def best_fit(data_x, data_y, weights=None):
     x = data_x
     y = data_y
 
-    coefficients, res, _, _, _ = np.polyfit(x, y, 1, full=True)
+    coefficients, res, _, _, _ = np.polyfit(x, y, 1, full=True, w=weights)
     polynomial = np.poly1d(coefficients)
     ys = polynomial(x)
     # print coefficients
