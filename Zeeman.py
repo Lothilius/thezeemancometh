@@ -260,7 +260,12 @@ def best_fit(data_x, data_y, weights=None):
 
     sd_of_slope, sd_of_y_intercept = calc_fit_uncertanty(data_x, res[0], len(data_x))
 
-    print round(sd_of_slope * 2, 2), round(sd_of_y_intercept * 2, 2)
+    max_error = np.poly1d([coefficients[0] + sd_of_slope, coefficients[1] + sd_of_y_intercept])
+    min_error = np.poly1d([coefficients[0] - sd_of_slope, coefficients[1] - sd_of_y_intercept])
+    plt.plot(x, max_error(x), '--', color='m')
+    plt.plot(x, min_error(x), '--', color='m')
+
+    print '+\-', round(sd_of_slope, 2), ' +\-', round(sd_of_y_intercept, 2)
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
 
