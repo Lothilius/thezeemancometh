@@ -718,7 +718,8 @@ def main():
 
         final_data = np.append(final_data, [[sfm_mean, un_sfm, b_field(amps), uncertainty_b]], axis=0)
         final_data = np.append(final_data, [[sfp_mean, un_sfp, b_field(amps), uncertainty_b]], axis=0)
-        print(np.round(final_data, 2))
+        print(np.round(final_plus, 2))
+        print(np.round(final_minus, 2))
 
         os.system("afplay woohoo.wav")
 
