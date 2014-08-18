@@ -281,13 +281,13 @@ def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right,
 
     #Remove any peak with less than half the maximum peak intensity
     new = []
-    for item in right_main_peak_list:
+    for item in right_main_peak_list[::2]:
         new.append(item[3])
 
     half_largest_peak = max(new) / 2
 
     main_peaks = []
-    for i, item in enumerate(right_main_peak_list):
+    for i, item in enumerate(right_main_peak_list[::2]):
         if item[3] > half_largest_peak:
             main_peaks.append(item)
 
