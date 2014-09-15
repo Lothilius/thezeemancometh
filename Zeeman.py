@@ -9,7 +9,7 @@ import math
 import getpass
 import time
 
-from skimage import data, filter, exposure
+from skimage import data, filter
 from skimage.color import rgb2gray
 from skimage.transform import hough_circle
 from skimage.feature import peak_local_max
@@ -69,8 +69,12 @@ def dataArray(peakL1, peakR1, peakL2, peakI, peakO):
     return radArray
 
 
-#Ternary Search
 def ternarySearch(f, left, right, absolutePrecision):
+    """Ternary Search algorithm search for peak within a bound.
+
+    Return location of peak and value
+    """
+
     #left and right are the current bounds; the maximum is between them
     if (right - left) <= absolutePrecision or (right - left) <= 2:
         return round((left + right) / 2), f[(left + right) / 2]
@@ -84,8 +88,12 @@ def ternarySearch(f, left, right, absolutePrecision):
         return ternarySearch(f, left, rightThird, absolutePrecision)
 
 
-#Processes jpg file
+
 def jpg_to_array(file_path, file_name):
+    """Processes jpg file
+
+    Return the numpy array of pixel values of the image. 
+    """
     full_path = file_path + file_name
     image = data.load(full_path)
     #plt.imshow(image)
@@ -93,8 +101,12 @@ def jpg_to_array(file_path, file_name):
     return image
 
 
-#Remove all but one color
 def strip_color(image_rgb1, color_of_interest, sig):
+    """Remove all but one color
+
+    Return monochromatic image and image with canny filter
+    """
+
     image_rgb = ski.img_as_ubyte(image_rgb1)
 
     if color_of_interest == 0:
@@ -113,19 +125,23 @@ def strip_color(image_rgb1, color_of_interest, sig):
     image_proc = ski.filter.canny(image_stripped, sigma=sig, low_threshold=0, high_threshold=7)
 
     #Uses up the majority of time.
-    img, radii = get_center(image_proc, image_rgb)
+    img, radii = get_center(image_proc)
 
     print('The red and blue have been stripped from image.')
 
     return image_stripped, image_proc, radii
 
 
-#Use edges to get the center.
-def get_center(edges, image_rgb1):
+def get_center(edges):
+    """Use edges to calculate the center.
+
+    Return edges image and array of detected best guess center coordinates.
+    """
+
     #image = ski.img_as_ubyte(edges[977:2277, 1650:3150])
     image = edges
 
-    hough_radii = np.arange(350, 425, 5)
+    hough_radii = np.arange(400, 500, 5)
     hough_res = hough_circle(edges, hough_radii)
 
     centers = []
@@ -152,8 +168,8 @@ def get_center(edges, image_rgb1):
     return image, center_array
 
 
-#plot data
 def plotevents(datalist):
+    """Plot data"""
     x = range(0, len(datalist))
     x = np.array(x)
     y = datalist
@@ -166,13 +182,18 @@ def plotevents(datalist):
     return "done"
 
 
-#Create histogram for array of values.
+
 def histo_plot(data, num_bins=10):
+    """Plot histogram for array of values."""
     plt.figure('Data Histogram')
     n, bins, patches = plt.hist(data, bins=num_bins)
 
-#Get edges from processed image given a slice and the determined center
+
 def getedge(center, slice):
+    """ Get edges from processed image given a slice and the determined center
+
+    Return the arrays for the edges of the left and right of center
+    """
     r1 = []
     l1 =[]
     #Build right of center array
@@ -188,14 +209,20 @@ def getedge(center, slice):
     return l1, r1 + center
 
 
-#Calculate the spacial frequency
 def space_freq(rn, rm, rj, etelon=.01):
+    """Calculate the spacial frequency
+
+    Return spacial frequency
+    """
     sf = np.divide(1, 2 * etelon) * np.divide(np.square(rn) - np.square(rj), (np.square(rn) - np.square(rm)))
     return sf
 
 
-#Compare Radius from calibration image and sub radius image
 def cal_center(calcenter, center):
+    """Compare Radius from calibration image and sub radius image. Not implemented.
+
+    Return the difference from the calibration center and the center of a given image.
+    """
     dif_x = 0
     dif_y = 0
     if calcenter == center:
@@ -219,8 +246,14 @@ def cal_center(calcenter, center):
             pass
         return dif_x, dif_y
 
+
 #Get magnetic field function
 def mag_field():
+    """Calculate the magnetic filed relation in Tesla when provided an array of amps and
+    magnetic field readings.
+
+    Return the polynomial for the relation.
+    """
     raw_mag = [[3, .465], [3.4, .530], [3.8, .590], [4.2, .651], [4.6, .712], [5, .774],
                [5.4, .832]]  #raw_input("Type in Amps and magnetic field tuples: ")
     b_field = []
@@ -247,8 +280,12 @@ def mag_field():
 
     return polynomial
 
-#Find and plot best fit line
+
 def best_fit(data_x, data_y, weights=None):
+    """Find then plot best fit line
+
+    Return none
+    """
     x = data_x
     y = data_y
 
@@ -258,7 +295,7 @@ def best_fit(data_x, data_y, weights=None):
     # print coefficients
     print polynomial
 
-    sd_of_slope, sd_of_y_intercept = calc_fit_uncertanty(data_x, res[0], len(data_x))
+    sd_of_slope, sd_of_y_intercept = calc_fit_uncertainty(data_x, res[0], len(data_x))
 
     max_error = np.poly1d([coefficients[0] + sd_of_slope, coefficients[1] + sd_of_y_intercept])
     min_error = np.poly1d([coefficients[0] - sd_of_slope, coefficients[1] - sd_of_y_intercept])
@@ -269,8 +306,13 @@ def best_fit(data_x, data_y, weights=None):
     #plt.subplot(5, 4, 10)
     plt.plot(x, ys)
 
-#Create the calibration arrays for the horizontal and vertical cross sections.
-def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right, uncertanty_center, avrg_bisection, amps):
+
+def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right,
+                            uncertanty_center, avrg_bisection, amps):
+    """Create the calibration arrays for the left and right of center for the cross section giver.
+
+    Return left and right detected edges and peaks.
+    """
     peakPrec = uncertanty_center
     right_main_peak_list = []
 
@@ -299,7 +341,7 @@ def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right,
     right_calibration = np.array(right_main_peak_list)
 
 
-# Find left Edges
+    # Find left Edges
     left_main_peak_list = []
     edges_left = edges_left[::-1]
     for i, item in enumerate(edges_left):
@@ -325,7 +367,7 @@ def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right,
     #Array of edges used to define boundaries for the primary peaks
     left_calibration = np.array(left_main_peak_list)
 
-#Build and graph main image
+    #Build and graph main image
     field_image = np.array([image_stripped] * 300)
     field_image_proc = np.array([image_proc] * 300)
 
@@ -363,6 +405,11 @@ def create_calibration_pair(image_stripped, image_proc, edges_left, edges_right,
 
 
 def get_calibration(inputFileDer, file_name):
+    """Create calibration file for top, bottom, left and rights of center peaks.
+
+    Return monochromatic image, a proceced image, the original image, arrays for the right, left, bottom, and top
+      calibration, the selected color of interest, and the averages for the center coordinates.
+    """
     color_of_interest = raw_input("What color is of interest? ")
     if ('Red' in color_of_interest) or ('red' in color_of_interest):
         color_of_interest = 0
@@ -393,7 +440,6 @@ def get_calibration(inputFileDer, file_name):
     plt.imshow(image_stripped, origin='lower', alpha=.5)
     plt.gray()
 
-
     #Print average of the center in the y axis.
     avrg_y = np.round(np.mean(center, axis=0)[0], decimals=0)
     print('Average y value for center: ' + str(avrg_y))
@@ -406,18 +452,10 @@ def get_calibration(inputFileDer, file_name):
     uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
     print('Uncertainty in x: ' + str(uncertanty_x))
 
-
-
     #y value will give horizontal slice.
-    # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
-    # plotevents(org_image[avrg_y][:, 1] + base_line)
     l = plt.axhline(y=avrg_y, color='r')
-    # plotevents(image_stripped[avrg_y] + base_line)
     l = plt.axvline(x=avrg_x, color='r')
-    # plt.margins(0)
     #plt.show()
-
-
 
     #Use edge array to get peak lists for horizontal and vertical cross sections
     edges_left, edges_right = getedge(avrg_x, image_proc[avrg_y])
@@ -437,6 +475,12 @@ def get_calibration(inputFileDer, file_name):
 
 def find_j_peaks(image_stripped, image_proc,
                  left_calibration, right_calibration, uncertanty_center, avrg_bisection, amps, run):
+    """Calculate the spatial frequency using a slice of the fringe pattern image. The slice used represents
+    both sides of center.
+
+    Return Spatial frequency value of plus and minus j peaks.
+    """
+
     #Find main peaks for non calibration files.
     edges_array = right_calibration
     peakPrec = uncertanty_center
@@ -471,8 +515,8 @@ def find_j_peaks(image_stripped, image_proc,
 
     #jplus_peak_list = np.array(jplus_peak_list)
 
-##Left Side
-#Find and Graph lines of main peaks for non calibration files.
+    ##Left Side
+    #Find and Graph lines of main peaks for non calibration files.
     edges_array = left_calibration
     peakPrec = uncertanty_center
     left_main_peak_list = []
@@ -485,8 +529,8 @@ def find_j_peaks(image_stripped, image_proc,
     main_peak_list = np.append(main_peak_list, left_main_peak_list, axis=0)
 
 
-##Left Side
-#Find and Graph lines for 1st secondary peaks
+    ##Left Side
+    #Find and Graph lines for 1st secondary peaks
     for i, edge in enumerate(left_main_peak_list):
         if i + 1 < len(left_main_peak_list):
             j = i + 1
@@ -497,8 +541,8 @@ def find_j_peaks(image_stripped, image_proc,
 
     jminus_peak_list = np.array(jminus_peak_list)
 
-##Left Side
-#Find and Graph lines for 2nd secondary peaks
+    ##Left Side
+    #Find and Graph lines for 2nd secondary peaks
     for i, edge in enumerate(left_main_peak_list):
         if i + 1 < len(left_main_peak_list):
             j = i + 1
@@ -530,7 +574,7 @@ def find_j_peaks(image_stripped, image_proc,
                 sfreq_plus.append(np.round(space_freq(avrg_bisection - main_peak_list[i][0], avrg_bisection - main_peak_list[i + 1][0],
                                                       avrg_bisection - jplus_peak_list[i - 1][0]), 2))
 
-#Get first right peak
+    #Get first right peak
     placement = run + 12
     #plt.figure(run + 6, figsize=(5, 1.5))
     plt.figure()
@@ -552,7 +596,7 @@ def find_j_peaks(image_stripped, image_proc,
 
     plt.margins(0)
 
-#Plot intensity graph with peak indicator lines.
+    #Plot intensity graph with peak indicator lines.
     #plt.figure(run + 7, figsize=(5, 1.5))
     plt.figure()
 
@@ -578,7 +622,14 @@ def find_j_peaks(image_stripped, image_proc,
     return sfreq_minus, sfreq_plus
 
 
-def get_sf(right_calibration, left_calibration, bottom_calibration, top_calibration, inputFileDer, file_name, color_of_interest, run):
+def get_sf(right_calibration, left_calibration, bottom_calibration, top_calibration,
+           inputFileDer, file_name, color_of_interest, run):
+    """Find the spatial frequency given calibration for the top, bottom, left, and
+        right initial peaks.
+
+    Return the plus and minus average values and their uncertainty and amps
+    """
+
     #Strip file name in to the amps for the file.
     amps = file_name.replace('.JPG', '').replace('_', '.')
     amps = float(amps)
@@ -587,7 +638,7 @@ def get_sf(right_calibration, left_calibration, bottom_calibration, top_calibrat
     #Strip color and get center
     org_image = jpg_to_array(inputFileDer, file_name)
 
-    image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=4)
+    image_stripped, image_proc, center = strip_color(org_image, color_of_interest, sig=5)
 
     #Show detected rings using the canny algorithm
     placement = run + 8
@@ -615,8 +666,6 @@ def get_sf(right_calibration, left_calibration, bottom_calibration, top_calibrat
     print('Average x value for center: ' + str(avrg_x))
     uncertanty_x = np.round(np.std(center, axis=0)[1] / (math.sqrt(len(center)) * 2), decimals=1)
     print('Uncertainty in x: ' + str(uncertanty_x))
-
-
 
     #y value will give horizontal slice.
     # base_line = avrg_y - org_image[avrg_y][avrg_x][1]
@@ -657,8 +706,12 @@ def get_sf(right_calibration, left_calibration, bottom_calibration, top_calibrat
 
     return sfm_mean, un_sfm, sfp_mean, un_sfp, amps
 
-#Calculate the Standard diviation of the slope and y intercept of a fit line.
-def calc_fit_uncertanty(list_x, residuals, number_of_points):
+
+def calc_fit_uncertainty(list_x, residuals, number_of_points):
+    """Calculate the Standard deviation of the slope and y intercept of a fit line.
+
+    Return standard deviation of slope and y intercept
+    """
     xi_squared = []
     for item in list_x:
         xi_squared.append(math.pow(item, 2))
@@ -669,18 +722,14 @@ def calc_fit_uncertanty(list_x, residuals, number_of_points):
 
     return sd_of_slope, sd_of_y_intercept
 
-def main():
-    #dtype={'names': ['amps', 'rowT', 'colR', 'rowB', 'colL'], 'formats': ['f2', 'i1', 'i1', 'i1', 'i1']})
-    user_name = getpass.getuser()
 
-    if user_name == 'martin':
-        print("Welcome Martin")
-        inputFileDer = "/Volumes/Ket/Users/Martin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
-    elif user_name == 'admin':
+def main():
+    user_name = getpass.getuser()
+    if user_name == 'admin':
         print("Welcome Admin")
         inputFileDer = "/Users/admin/Dropbox/School/Summer-2014/SSC-479R/comp-cert/as_images/"
     else:
-        print("Welcome ", str(user_name))
+        print "Welcome", str(user_name)
         inputFileDer = raw_input("Please enter directory of image files ending with a slash: ")
 
     #Initialize Some variables
@@ -699,6 +748,7 @@ def main():
     else:
         stupid_hidden_file = 1
 
+    #Get the calibration data.
     image_stripped, image_proc, org_image, left_calibration, right_calibration, \
            bottom_calibration, top_calibration, color_of_interest, avrg_y, avrg_x \
         = get_calibration(inputFileDer, file_name)
@@ -726,8 +776,8 @@ def main():
 
         run += 1
 
+    #Create master file of all peaks without averaging
     dataTofile(measured_data)
-    #print(measured_data)
 
     #Transfer final data to x and y with errors for error plot
     y = final_data[:, 0]
@@ -741,6 +791,7 @@ def main():
     best_fit(final_minus[:, 2], final_minus[:, 0])
     best_fit(final_plus[:, 2], final_plus[:, 0])
 
+    #Plot delta nu function
     plt.errorbar(x, y, xerr=un_x, yerr=un_y, fmt='+')
     plt.ylabel(r'$\Delta{\nu}  (mm^{-1})$')
     plt.xlabel('Magnetic Field (T)')
@@ -753,4 +804,15 @@ def main():
 
     plt.show()
 
-main()
+while True:
+    try:
+        main()
+    except:
+        print "An unexpected error occured"
+    print "\n\nWould you like to start another capture" \
+          + " session? (Y/N)"
+    do_again = str(raw_input(""))
+    if ('N' not in do_again) and ('n' not in do_again):
+        break
+    else:
+        print "Good Bye!"
