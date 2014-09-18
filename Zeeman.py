@@ -122,6 +122,7 @@ def strip_color(image_rgb1, color_of_interest, sig):
 
     image_stripped = rgb2gray(image_stripped)
 
+    # Todo generalize the sigma and threshold values based on the color and the image.
     image_proc = ski.filter.canny(image_stripped, sigma=sig, low_threshold=0, high_threshold=7)
 
     #Uses up the majority of time.
@@ -410,7 +411,7 @@ def get_calibration(inputFileDer, file_name):
     Return monochromatic image, a proceced image, the original image, arrays for the right, left, bottom, and top
       calibration, the selected color of interest, and the averages for the center coordinates.
     """
-    color_of_interest = raw_input("What color is of interest? ")
+    color_of_interest = raw_input("What color is of interest?(red, green, or blue): ")
     if ('Red' in color_of_interest) or ('red' in color_of_interest):
         color_of_interest = 0
     elif ('Green' in color_of_interest) or ('green' in color_of_interest):
@@ -807,10 +808,12 @@ def main():
 while True:
     try:
         main()
+    except TypeError:
+        print "An error occurred. Most likely related to inadequate sigma and threshold " \
+              "values in canny function for color selected."
     except:
-        print "An unexpected error occured"
-    print "\n\nWould you like to start another capture" \
-          + " session? (Y/N)"
+        print "An unexpected error occurred: ", sys.exc_info()[0]
+    print "\n\nWould you like to start another session? (Y/N)"
     do_again = str(raw_input(""))
     if ('N' not in do_again) and ('n' not in do_again):
         break
